@@ -19,6 +19,7 @@ use tui::{
     }
 };
 
+const WINDOW: (f64, f64) = (0.0, 100.0);
 const DATA: [(f64, f64); 5] = [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0), (3.0, 3.0), (4.0, 4.0)];
 const DATA2: [(f64, f64); 7] = [
     (0.0, 0.0),
@@ -31,17 +32,25 @@ const DATA2: [(f64, f64); 7] = [
 ];
 
 pub fn draw_big_o_chart() -> Chart<'static> {
+    // todo - O(1)
+    // todo - O(log n)
+    // todo - O(n)
+    // todo - O(n log n)
+    // todo - O(n ^ 2)
+    // todo - O(2 ^ n)
+    // todo - O(n!)
+
     let x_labels = vec![
         Span::styled(
-            format!("{}", -20.0),
+            format!("{}", WINDOW.0),
             Style::default().add_modifier(Modifier::BOLD),
         ),
         Span::raw(format!(
             "{}",
-            (-20.0 + 20.0) / 2.0
+            (WINDOW.0 + WINDOW.1) / 2.0
         )),
         Span::styled(
-            format!("{}", 20.0),
+            format!("{}", WINDOW.1),
             Style::default().add_modifier(Modifier::BOLD),
         ),
     ];
@@ -65,7 +74,7 @@ pub fn draw_big_o_chart() -> Chart<'static> {
         .block(
             Block::default()
                 .title(Span::styled(
-                    "Chart",
+                    "Big-O Notation",
                     Style::default()
                         .fg(Color::Cyan)
                         .add_modifier(Modifier::BOLD),
@@ -76,18 +85,18 @@ pub fn draw_big_o_chart() -> Chart<'static> {
             Axis::default()
                 .title("X Axis")
                 .style(Style::default().fg(Color::Gray))
-                .bounds([0.0, 20.0])
+                .bounds([WINDOW.0, WINDOW.1])
                 .labels(x_labels),
         )
         .y_axis(
             Axis::default()
                 .title("Y Axis")
                 .style(Style::default().fg(Color::Gray))
-                .bounds([-20.0, 20.0])
+                .bounds([WINDOW.0, WINDOW.1])
                 .labels(vec![
-                    Span::styled("-20", Style::default().add_modifier(Modifier::BOLD)),
+                    Span::styled(format!("{}", WINDOW.0), Style::default().add_modifier(Modifier::BOLD)),
                     Span::raw("0"),
-                    Span::styled("20", Style::default().add_modifier(Modifier::BOLD)),
+                    Span::styled(format!("{}", WINDOW.1), Style::default().add_modifier(Modifier::BOLD)),
                 ]),
         )
 }
