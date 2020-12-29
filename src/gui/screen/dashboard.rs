@@ -40,7 +40,7 @@ impl Screenable for Dashboard {
             .split(f.size());
 
         f.render_widget(
-            draw_big_o_chart(f.size().height),
+            draw_big_o_chart(),
             chunks[0]
         );
 
