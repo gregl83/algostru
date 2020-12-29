@@ -1,3 +1,5 @@
-pub fn multiply<'a>(x: &str, y: &str) -> &'a str {
-    ""
+use num_bigint::BigInt;
+
+pub fn multiply(x: BigInt, y: BigInt) -> BigInt {
+    x
 }
