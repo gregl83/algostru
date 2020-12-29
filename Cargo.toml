@@ -3,8 +3,11 @@ name = "algostru"
 version = "0.1.0"
 authors = ["Gregory Langlais <general@gregorylanglais.com>"]
 edition = "2018"
-description = "Algorithms and Data Structures"
+description = "Algorithms (algo) and Data Structures (stru)"
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/gregl83/algostru"
+homepage = "https://crates.io/crates/algostru"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -13,6 +16,10 @@ log = { version = "0.4" }
 crossterm = "0.18.2"
 tui = { version = "0.13.0", default-features = false, features = ['crossterm'] }
 rand = "0.7"
+
+[lib]
+name = "algostru"
+path = "src/lib.rs"
 
 [[bin]]
 name = "algostru"
