@@ -32,14 +32,6 @@ const DATA2: [(f64, f64); 7] = [
 ];
 
 pub fn draw_big_o_chart() -> Chart<'static> {
-    // todo - O(1)
-    // todo - O(log n)
-    // todo - O(n)
-    // todo - O(n log n)
-    // todo - O(n ^ 2)
-    // todo - O(2 ^ n)
-    // todo - O(n!)
-
     let x_labels = vec![
         Span::styled(
             format!("{}", WINDOW.0),
@@ -57,17 +49,52 @@ pub fn draw_big_o_chart() -> Chart<'static> {
 
     let datasets = vec![
         Dataset::default()
-            .name("data2")
+            .name("O(1)")
             .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Cyan))
             .data(&DATA),
         Dataset::default()
-            .name("data3")
+            .name("O(log n)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::Yellow))
             .data(&DATA2),
+        Dataset::default()
+            .name("O(n)")
+            .marker(
+                symbols::Marker::Dot
+            )
+            .style(Style::default().fg(Color::LightBlue))
+            .data(&DATA2),
+        Dataset::default()
+            .name("O(n log n)")
+            .marker(
+                symbols::Marker::Dot
+            )
+            .style(Style::default().fg(Color::LightGreen))
+            .data(&DATA2),
+        Dataset::default()
+            .name("O(n^2)")
+            .marker(
+                symbols::Marker::Dot
+            )
+            .style(Style::default().fg(Color::Green))
+            .data(&DATA2),
+        Dataset::default()
+            .name("O(2^n)")
+            .marker(
+                symbols::Marker::Dot
+            )
+            .style(Style::default().fg(Color::Red))
+            .data(&DATA2),
+        Dataset::default()
+            .name("O(n!)")
+            .marker(
+                symbols::Marker::Dot
+            )
+            .style(Style::default().fg(Color::DarkGray))
+            .data(&DATA2)
     ];
 
     Chart::new(datasets)
@@ -83,14 +110,14 @@ pub fn draw_big_o_chart() -> Chart<'static> {
         )
         .x_axis(
             Axis::default()
-                .title("X Axis")
+                .title("Elements")
                 .style(Style::default().fg(Color::Gray))
                 .bounds([WINDOW.0, WINDOW.1])
                 .labels(x_labels),
         )
         .y_axis(
             Axis::default()
-                .title("Y Axis")
+                .title("Operations")
                 .style(Style::default().fg(Color::Gray))
                 .bounds([WINDOW.0, WINDOW.1])
                 .labels(vec![
