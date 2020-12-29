@@ -12,7 +12,6 @@ use std::{
     },
     rc::Rc,
     cell::RefCell,
-    collections::HashMap,
 };
 
 use log::{LevelFilter};
@@ -43,7 +42,6 @@ use crate::gui::router::{
     Router,
 };
 use crate::gui::screen::{
-    Screenable,
     title::Title,
     dashboard::Dashboard,
 };
@@ -80,13 +78,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     terminal.clear()?;
 
     let shutdown = |mut terminal: Terminal<CrosstermBackend<Stdout>>| {
-        disable_raw_mode();
+        disable_raw_mode().unwrap();
         execute!(
                 terminal.backend_mut(),
                 LeaveAlternateScreen,
                 DisableMouseCapture
-        );
-        terminal.show_cursor();
+        ).unwrap();
+        terminal.show_cursor().unwrap();
     };
 
     loop {

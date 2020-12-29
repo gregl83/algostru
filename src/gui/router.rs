@@ -1,7 +1,6 @@
 use std::{
     rc::Rc,
     cell::RefCell,
-    collections::HashMap,
 };
 
 use super::store::Store;

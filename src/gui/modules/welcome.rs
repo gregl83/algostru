@@ -8,7 +8,6 @@ use tui::{
     widgets::{
         Block,
         Borders,
-        List,
         Paragraph,
         Wrap
     },

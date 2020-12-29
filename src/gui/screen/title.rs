@@ -8,13 +8,11 @@ use std::{
 use tui::{
     backend::CrosstermBackend,
     layout::{Constraint, Direction, Layout},
-    widgets::ListState,
     Frame,
 };
 use crossterm::event::KeyCode;
 
 use crate::gui::store::Store;
-use crate::util::StatefulList;
 use crate::gui::screen::Screenable;
 use crate::gui::modules::welcome::draw_welcome_message;
 
