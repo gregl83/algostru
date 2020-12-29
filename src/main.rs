@@ -44,6 +44,7 @@ use crate::gui::router::{
 };
 use crate::gui::screen::{
     Screenable,
+    title::Title,
     dashboard::Dashboard,
 };
 use crate::util::event::{
@@ -70,6 +71,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let router = Router::new(
         Rc::clone(&store),
         vec![
+            (Route::Title, Box::new(Title::new(Rc::clone(&store)))),
             (Route::Dashboard, Box::new(Dashboard::new(Rc::clone(&store)))),
         ]
     );

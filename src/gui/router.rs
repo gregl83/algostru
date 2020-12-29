@@ -10,6 +10,7 @@ use std::borrow::BorrowMut;
 
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub enum Route {
+    Title,
     Dashboard,
 }
 
@@ -45,7 +46,7 @@ impl Router {
         let store_ref = Rc::clone(&self.store);
         let store = store_ref.borrow();
         match *store {
-            Store {welcomed: false, ..} => self.find_screen(Route::Dashboard).borrow_mut(),
+            Store {welcomed: false, ..} => self.find_screen(Route::Title).borrow_mut(),
             Store {welcomed: true, ..} => self.find_screen(Route::Dashboard).borrow_mut(),
         }
     }

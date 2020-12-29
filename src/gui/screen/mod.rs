@@ -1,4 +1,5 @@
 pub mod dashboard;
+pub mod title;
 
 use std::{
     io::Stdout,

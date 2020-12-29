@@ -16,21 +16,21 @@ use crossterm::event::KeyCode;
 use crate::gui::store::Store;
 use crate::util::StatefulList;
 use crate::gui::screen::Screenable;
-use crate::gui::modules::big_o_chart::draw_big_o_chart;
+use crate::gui::modules::welcome::draw_welcome_message;
 
-pub struct Dashboard {
+pub struct Title {
     store: Rc<RefCell<Store>>,
 }
 
-impl Dashboard {
+impl Title {
     pub fn new(store: Rc<RefCell<Store>>) -> Self {
-        Dashboard {
+        Title {
             store
         }
     }
 }
 
-impl Screenable for Dashboard {
+impl Screenable for Title {
     fn draw(&mut self, f: &mut Frame<CrosstermBackend<Stdout>>) -> Result<(), Error> {
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
@@ -40,7 +40,7 @@ impl Screenable for Dashboard {
             .split(f.size());
 
         f.render_widget(
-            draw_big_o_chart(f.size().height),
+            draw_welcome_message(f.size().height),
             chunks[0]
         );
 
