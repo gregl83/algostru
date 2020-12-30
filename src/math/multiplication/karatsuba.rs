@@ -1,6 +1,6 @@
-use crate::math::{
+use num_bigint::{
     Sign,
-    bytes_to_ints
+    BigInt
 };
 
 fn karatsuba(x: Vec<u8>, _y: Vec<u8>) -> Vec<u8> {
@@ -8,12 +8,12 @@ fn karatsuba(x: Vec<u8>, _y: Vec<u8>) -> Vec<u8> {
 }
 
 pub fn multiply(x: &[u8], y: &[u8]) -> (Sign, Vec<u8>) {
-    let (x_sign, x) = bytes_to_ints(x);
-    let (y_sign, y) = bytes_to_ints(y);
+    let (x_sign, x) = BigInt::parse_bytes(x, 10).unwrap().to_radix_le(10);
+    let (y_sign, y) = BigInt::parse_bytes(y, 10).unwrap().to_radix_le(10);
     (
         match (x_sign, y_sign) {
-            (Sign::Positive, Sign::Positive) | (Sign::Negative, Sign::Negative) => Sign::Positive,
-            _ => Sign::Negative
+            (Sign::Plus, Sign::Plus) | (Sign::Minus, Sign::Minus) => Sign::Plus,
+            _ => Sign::Minus
         },
         karatsuba(x, y)
     )
