@@ -4,7 +4,7 @@ pub mod karatsuba;
 mod tests {
     use super::*;
 
-    use num_bigint::BigInt;
+    use num_bigint::{BigInt, Sign};
 
     const PRODUCTS: [(&[u8], &[u8], &[u8]); 9] = [
         (b"10", b"10", b"100"),
@@ -25,9 +25,11 @@ mod tests {
     #[test]
     fn test_karatsuba_products() {
         for (x, y, expectation) in &PRODUCTS {
-            let (sign_expectation, product_expectation) = BigInt::parse_bytes(expectation, 10).unwrap().to_radix_le(10);
-            let (sign, product) = karatsuba::multiply(x, y);
-            assert_eq!(sign, sign_expectation);
+            let (sign_expectation, mut product_expectation) = BigInt::parse_bytes(expectation, 10).unwrap().to_radix_le(10);
+            if sign_expectation == Sign::Minus {
+                product_expectation.push(45);
+            }
+            let product = karatsuba::multiply(x, y);
             assert_eq!(product, product_expectation);
         }
     }
