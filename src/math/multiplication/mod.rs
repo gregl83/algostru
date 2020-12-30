@@ -4,24 +4,17 @@ pub mod karatsuba;
 mod tests {
     use super::*;
 
-    use num_bigint::{BigInt, ToBigInt};
+    use crate::math::bytes_to_ints;
 
-    const SMALL_PRODUCTS: [(isize, isize, isize); 12] = [
-        (-10, -10, 100),
-        (-10, 10, -100),
-        (10, 10, 100),
-        (10, -10, -100),
-        (-25, -25, 625),
-        (-25, 25, -625),
-        (25, 25, 625),
-        (25, -25, -625),
-        (-100, -100, 10000),
-        (-100, 100, -10000),
-        (100, 100, 10000),
-        (100, -100, -10000),
-    ];
-
-    const BIG_PRODUCTS: [(&[u8], &[u8], &[u8]); 1] = [
+    const PRODUCTS: [(&[u8], &[u8], &[u8]); 9] = [
+        (b"10", b"10", b"100"),
+        (b"-10", b"10", b"-100"),
+        (b"10", b"-10", b"-100"),
+        (b"-10", b"-10", b"-100"),
+        (b"25", b"25", b"625"),
+        (b"-25", b"25", b"-625"),
+        (b"25", b"-25", b"-625"),
+        (b"-25", b"-25", b"-625"),
         (
             b"3141592653589793238462643383279502884197169399375105820974944592",
             b"2718281828459045235360287471352662497757247093699959574966967627",
@@ -30,22 +23,12 @@ mod tests {
     ];
 
     #[test]
-    fn test_karatsuba_small_products() {
-        for (x, y, expectation) in &SMALL_PRODUCTS {
-            let x = x.to_bigint().unwrap();
-            let y = y.to_bigint().unwrap();
-            let expectation = expectation.to_bigint().unwrap();
-            assert_eq!(karatsuba::multiply(x, y), expectation);
-        }
-    }
-
-    #[test]
-    fn test_karatsuba_large_products() {
-        for (x, y, expectation) in &BIG_PRODUCTS {
-            let x = BigInt::parse_bytes(x, 10).unwrap();
-            let y = BigInt::parse_bytes(y, 10).unwrap();
-            let expectation = BigInt::parse_bytes(expectation, 10).unwrap();
-            assert_eq!(karatsuba::multiply(x, y), expectation);
+    fn test_karatsuba_products() {
+        for (x, y, expectation) in &PRODUCTS {
+            let (sign_expectation, product_expectation) = bytes_to_ints(expectation);
+            let (sign, product) = karatsuba::multiply(x, y);
+            assert_eq!(sign, sign_expectation);
+            assert_eq!(product, product_expectation);
         }
     }
 }

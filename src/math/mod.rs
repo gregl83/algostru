@@ -1,12 +1,12 @@
 pub mod multiplication;
 
 #[derive(Debug, PartialEq)]
-enum Sign {
+pub enum Sign {
     Positive,
     Negative,
 }
 
-fn bytes_to_ints(chars: &[u8]) -> (Sign, Vec<u8>) {
+pub fn bytes_to_ints(chars: &[u8]) -> (Sign, Vec<u8>) {
     let mut offset: usize = 0;
     let sign = match chars[offset] as char {
         '-' => {
