@@ -9,7 +9,11 @@ Experimental
 ## Contents
 
 - Math
-  - [Karatsuba](/src/math/multiplication/karatsuba.rs)
+  - Multiplication
+    - [Karatsuba](/src/math/multiplication/karatsuba.rs)
+- Collections
+  - Sort
+    - [MergeSort](/src/collections/sort/merge_sort.rs)
 
 ## References
 
