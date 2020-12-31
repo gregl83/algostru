@@ -22,11 +22,11 @@ fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
     let mut y_index = 0;
 
     while x_index < x.len() && y_index < y.len() {
-        if x[x_index] >= y[y_index] {
+        if x[x_index] <= y[y_index] {
             merged.push(x[x_index]);
             x_index += 1;
         } else {
-            merged.push(x[y_index]);
+            merged.push(y[y_index]);
             y_index += 1;
         }
     }
