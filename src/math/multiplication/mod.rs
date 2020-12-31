@@ -4,17 +4,14 @@ pub mod karatsuba;
 mod tests {
     use super::*;
 
-    use num_bigint::{BigInt, Sign};
+    use num_bigint::{BigInt};
 
-    const PRODUCTS: [(&[u8], &[u8], &[u8]); 9] = [
+    const PRODUCTS: [(&[u8], &[u8], &[u8]); 6] = [
         (b"10", b"10", b"100"),
-        (b"-10", b"10", b"-100"),
-        (b"10", b"-10", b"-100"),
-        (b"-10", b"-10", b"-100"),
-        (b"25", b"25", b"625"),
-        (b"-25", b"25", b"-625"),
-        (b"25", b"-25", b"-625"),
-        (b"-25", b"-25", b"-625"),
+        (b"134", b"134", b"17956"),
+        (b"5678", b"5678", b"32239684"),
+        (b"30000", b"30000", b"900000000"),
+        (b"12345678", b"12345678", b"152415765279684"),
         (
             b"3141592653589793238462643383279502884197169399375105820974944592",
             b"2718281828459045235360287471352662497757247093699959574966967627",
@@ -25,12 +22,11 @@ mod tests {
     #[test]
     fn test_karatsuba_products() {
         for (x, y, expectation) in &PRODUCTS {
-            let (sign_expectation, mut product_expectation) = BigInt::parse_bytes(expectation, 10).unwrap().to_radix_le(10);
-            if sign_expectation == Sign::Minus {
-                product_expectation.push(45);
-            }
+            let x = BigInt::parse_bytes(x, 10).unwrap();
+            let y = BigInt::parse_bytes(y, 10).unwrap();
+            let expectation = BigInt::parse_bytes(expectation, 10).unwrap();
             let product = karatsuba::multiply(x, y);
-            assert_eq!(product, product_expectation);
+            assert_eq!(product, expectation);
         }
     }
 }

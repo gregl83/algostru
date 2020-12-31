@@ -1,46 +1,69 @@
-use num_bigint::{
-    Sign,
-    BigInt
-};
+use std::cmp;
 
-/*
-    # Base case
-    if X < 10 and Y < 10:
-        return X * Y
+use num_integer::Integer;
+use num_bigint::BigInt;
 
-    # determine the size of X and Y
-    size = max(len(str(X)), len(str(Y)))
+// Karatsuba Multiplication
+//
+// Input: two n-digit positive integers x and y
+// Output: product of x * y
+// Assumption: n is power of 2
+//
+// =================================================================================================
+//
+// n = max length of x or y
+//
+// if n equals 1 then
+//     base case: return product of x * y
+// else
+//     a, b = first and second halves (n/2) of x
+//     c, d = first and second halves (n/2) of y
+//
+//     p = sum of a + b
+//     q = sum of c + d
+//
+//     recursive karatsuba:
+//     ac = product of a * c
+//     bd = product of b * d
+//     pq = product of p * q
+//
+//     adbc = pq - ac - bd
+//
+//     return result: 10^n * ac + (10^n/2) * adbc + bd
+fn karatsuba(x: BigInt, y: BigInt) -> BigInt {
+    let x_len = x.to_str_radix(10).len() as u32;
+    let y_len = y.to_str_radix(10).len() as u32;
+    let n = cmp::min(x_len, y_len);
 
-    # Split X and Y
-    n = ceil(size // 2)
-    p = 10 ** n
-    a = floor(X // p)
-    b = X % p
-    c = floor(Y // p)
-    d = Y % p
-
-    # Recur until base case
-    ac = karatsuba(a, c)
-    bd = karatsuba(b, d)
-    e = karatsuba(a + b, c + d) - ac - bd
-
-    # return the equation
-    return int(10 ** (2 * n) * ac + (10 ** n) * e + bd)
- */
-
-fn karatsuba(x: Vec<u8>, y: Vec<u8>) -> Vec<u8> {
-    if x.len() == 1 && y.len() == 1 {
-        println!("base");
+    if n == 0 {
+        return BigInt::from(1);
     }
-    x
+
+    if n == 1 {
+        return x * y;
+    }
+
+    let midpoint = n / 2;
+    let base = BigInt::from(10);
+    let midnum = base.pow(midpoint);
+
+    let a = x.div_floor(&midnum);
+    let b = x.mod_floor(&midnum);
+    let c = y.div_floor(&midnum);
+    let d = y.mod_floor(&midnum);
+
+    let p = &a + &b;
+    let q = &c + &d;
+
+    let ac = karatsuba(a, c);
+    let bd = karatsuba(b, d);
+    let pq = karatsuba(p, q);
+
+    let adbc = &pq - &ac - &bd;
+
+    base.pow(2 * midpoint) * ac + base.pow(midpoint) * adbc + bd
 }
 
-pub fn multiply(x: &[u8], y: &[u8]) -> Vec<u8> {
-    let (x_sign, x) = BigInt::parse_bytes(x, 10).unwrap().to_radix_le(10);
-    let (y_sign, y) = BigInt::parse_bytes(y, 10).unwrap().to_radix_le(10);
-    let mut product = karatsuba(x, y);
-    if (x_sign, y_sign) == (Sign::Plus, Sign::Minus) || (x_sign, y_sign) == (Sign::Minus, Sign::Plus) {
-        product.push(45);
-    }
-    product
+pub fn multiply(x: BigInt, y: BigInt) -> BigInt {
+    karatsuba(x, y)
 }
