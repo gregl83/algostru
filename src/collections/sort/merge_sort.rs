@@ -17,7 +17,28 @@
 //
 // return result
 fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
+    let mut merged: Vec<isize> = Vec::new();
+    let mut x_index = 0;
+    let mut y_index = 0;
 
+    while x_index < x.len() && y_index < y.len() {
+        if x[x_index] >= y[y_index] {
+            merged.push(x[x_index]);
+            x_index += 1;
+        } else {
+            merged.push(x[y_index]);
+            y_index += 1;
+        }
+    }
+
+    for element in x[x_index..].to_vec() {
+        merged.push(element);
+    }
+    for element in y[y_index..].to_vec() {
+        merged.push(element);
+    }
+
+    merged
 }
 
 // Merge Sort
@@ -41,11 +62,11 @@ pub fn sort(x: Vec<isize>) -> Vec<isize> {
     }
 
     let midpoint = x.len() / 2;
-    let a = x[midpoint..];
-    let b = x[..midpoint];
+    let a = &x[midpoint..];
+    let b = &x[..midpoint];
 
-    let c = merge_sort(a.to_vec());
-    let d = merge_sort(b.to_vec());
+    let c = sort(a.to_vec());
+    let d = sort(b.to_vec());
 
     merge(c, d)
 }
