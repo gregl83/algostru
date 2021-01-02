@@ -11,6 +11,7 @@ Experimental
 - Math
   - Multiplication
     - [Karatsuba](/src/math/multiplication/karatsuba.rs)
+    - [Strassen](/src/math/multiplication/strassen.rs)
 - Collections
   - Sort
     - [MergeSort](/src/collections/sort/merge_sort.rs)

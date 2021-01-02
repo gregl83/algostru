@@ -1,4 +1,5 @@
 pub mod karatsuba;
+pub mod strassen;
 
 #[cfg(test)]
 mod tests {
@@ -28,5 +29,10 @@ mod tests {
             let product = karatsuba::multiply(x, y);
             assert_eq!(product, expectation);
         }
+    }
+
+    #[test]
+    fn test_strassen_products() {
+        assert_eq!(true, false);
     }
 }
