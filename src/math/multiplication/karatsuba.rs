@@ -35,10 +35,6 @@ fn karatsuba(x: BigInt, y: BigInt) -> BigInt {
     let y_len = y.to_str_radix(10).len() as u32;
     let n = cmp::min(x_len, y_len);
 
-    if n == 0 {
-        return BigInt::from(1);
-    }
-
     if n == 1 {
         return x * y;
     }
