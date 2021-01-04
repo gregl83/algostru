@@ -15,6 +15,7 @@ Experimental
 - Collections
   - Sort
     - [MergeSort](/src/collections/sort/merge_sort.rs)
+    - [Quick Sort](/src/collections/sort/quick_sort.rs)
 
 ## References
 
