@@ -17,36 +17,18 @@ use tui::{
     }
 };
 
-const WINDOW: (f64, f64) = (0.0, 100.0);
-const DATA: [(f64, f64); 5] = [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0), (3.0, 3.0), (4.0, 4.0)];
-const DATA2: [(f64, f64); 13] = [
-    (0.0, 0.0),
-    (2.5, 0.12),
-    (5.0, 0.25),
-    (10.0, 0.75),
-    (15.0, 1.0),
-    (20.0, 1.25),
-    (25.0, 1.5),
-    (30.0, 1.75),
-    (35.0, 2.0),
-    (40.0, 2.25),
-    (45.0, 2.5),
-    (50.0, 2.75),
-    (55.0, 3.0),
-];
-
-pub fn draw_big_o_chart() -> Chart<'static> {
+pub fn draw_big_o_chart<'a>(window: &[(f64, f64); 2], data: &'a Vec<(f64, f64)>) -> Chart<'a> {
     let x_labels = vec![
         Span::styled(
-            format!("{}", WINDOW.0),
+            format!("{}", window[0].0),
             Style::default().add_modifier(Modifier::BOLD),
         ),
         Span::raw(format!(
             "{}",
-            (WINDOW.0 + WINDOW.1) / 2.0
+            (window[0].0 + window[0].1) / 2.0
         )),
         Span::styled(
-            format!("{}", WINDOW.1),
+            format!("{}", window[0].1),
             Style::default().add_modifier(Modifier::BOLD),
         ),
     ];
@@ -56,49 +38,49 @@ pub fn draw_big_o_chart() -> Chart<'static> {
             .name("O(1)")
             .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Cyan))
-            .data(&DATA),
+            .data(&data),
         Dataset::default()
             .name("O(log n)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::Yellow))
-            .data(&DATA2),
+            .data(&data),
         Dataset::default()
             .name("O(n)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::LightBlue))
-            .data(&DATA2),
+            .data(&data),
         Dataset::default()
             .name("O(n log n)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::LightGreen))
-            .data(&DATA2),
+            .data(&data),
         Dataset::default()
             .name("O(n^2)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::Green))
-            .data(&DATA2),
+            .data(&data),
         Dataset::default()
             .name("O(2^n)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::Red))
-            .data(&DATA2),
+            .data(&data),
         Dataset::default()
             .name("O(n!)")
             .marker(
                 symbols::Marker::Dot
             )
             .style(Style::default().fg(Color::DarkGray))
-            .data(&DATA2)
+            .data(&data)
     ];
 
     Chart::new(datasets)
@@ -116,18 +98,18 @@ pub fn draw_big_o_chart() -> Chart<'static> {
             Axis::default()
                 .title("Elements")
                 .style(Style::default().fg(Color::Gray))
-                .bounds([WINDOW.0, WINDOW.1])
+                .bounds([window[0].0, window[0].1])
                 .labels(x_labels),
         )
         .y_axis(
             Axis::default()
                 .title("Operations")
                 .style(Style::default().fg(Color::Gray))
-                .bounds([WINDOW.0, WINDOW.1])
+                .bounds([window[1].0, window[1].1])
                 .labels(vec![
-                    Span::styled(format!("{}", WINDOW.0), Style::default().add_modifier(Modifier::BOLD)),
+                    Span::styled(format!("{}", window[1].0), Style::default().add_modifier(Modifier::BOLD)),
                     Span::raw("0"),
-                    Span::styled(format!("{}", WINDOW.1), Style::default().add_modifier(Modifier::BOLD)),
+                    Span::styled(format!("{}", window[1].1), Style::default().add_modifier(Modifier::BOLD)),
                 ]),
         )
 }
