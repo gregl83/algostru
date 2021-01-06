@@ -13,9 +13,9 @@ Experimental
     - [Karatsuba](/src/math/multiplication/karatsuba.rs)
     - [Strassen](/src/math/multiplication/strassen.rs)
 - Collections
-  - Order
-    - [MergeSort](/src/collections/order/merge_sort.rs)
-    - [Quick Sort](/src/collections/order/quick_sort.rs)
+  - Ordering
+    - [Merge Sort](/src/collections/ordering/merge_sort.rs)
+    - [Quick Sort](/src/collections/ordering/quick_sort.rs)
 
 ## References
 
