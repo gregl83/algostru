@@ -22,11 +22,12 @@ Either `cargo run` or `cargo install` should work fine from repository root.
 
 ### Library
 
-- Math
+- Arithmetic
   - Multiplication
-    - [Karatsuba](/src/math/multiplication/karatsuba.rs)
-    - [Strassen](/src/math/multiplication/strassen.rs)
+    - [Karatsuba](/src/arithmetic/multiplication/karatsuba.rs)
 - Collections
+  - Multiplication
+    - [Strassen](/src/collections/multiplication/strassen.rs)
   - Ordering
     - [Bubble Sort](/src/collections/ordering/bubble_sort.rs)
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
