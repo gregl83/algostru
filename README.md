@@ -30,7 +30,7 @@ Either `cargo run` or `cargo install` should work fine from repository root.
   - Ordering
     - [Bubble Sort](/src/collections/ordering/bubble_sort.rs)
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
-    - [Merge Sort Inversion Count](/collections/ordering/merge_sort_inversion_count.rs)
+    - [Merge Sort Inversion Count](/src/collections/ordering/merge_sort_inversion_count.rs)
     - [Quick Sort](/src/collections/ordering/quick_sort.rs)
 
 ## References
