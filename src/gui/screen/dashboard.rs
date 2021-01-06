@@ -22,26 +22,54 @@ const WINDOW: [(f64, f64); 2] = [
     (0.0, 100.0),
     (0.0, 1000.0)
 ];
-const POINTS: u8 = 100;
+const POINTS: u8 = 200;
+
+pub struct Line {
+    pub label: String,
+    pub points: Vec<(f64, f64)>,
+    pub y: fn(f64) -> f64
+}
+
+impl Line {
+    pub fn push(&mut self, x: f64) {
+        self.points.push(
+            (x, (self.y)(x))
+        );
+    }
+}
+
+pub struct Plot {
+    pub lines: Vec<Line>
+}
 
 pub struct Dashboard {
     store: Rc<RefCell<Store>>,
-    data: Vec<(f64, f64)>
+    plot: Plot,
 }
 
 impl Dashboard {
     pub fn new(store: Rc<RefCell<Store>>) -> Self {
-        let mut data = vec![];
         let x_interval: f64 = WINDOW[0].1 / (POINTS as f64);
 
+        let mut lines = vec![];
+        let mut line = Line {
+            label: String::from("O(1)"),
+            points: vec![],
+            y: |x| x.powf(2.0)
+        };
         for i in 1..POINTS {
             let x = x_interval.mul(i as f64);
-            data.push((x, x.powf(2.0)));
+
+            line.push(x);
         }
+        lines.push(line);
+        let plot = Plot {
+            lines,
+        };
 
         Dashboard {
             store,
-            data
+            plot,
         }
     }
 }
@@ -56,7 +84,7 @@ impl Screenable for Dashboard {
             .split(f.size());
 
         f.render_widget(
-            draw_big_o_chart(&WINDOW, self.data.borrow()),
+            draw_big_o_chart(&WINDOW, self.plot.borrow()),
             chunks[0]
         );
 

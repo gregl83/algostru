@@ -17,20 +17,19 @@ use tui::{
     }
 };
 
-pub fn draw_big_o_chart<'a>(window: &[(f64, f64); 2], data: &'a Vec<(f64, f64)>) -> Chart<'a> {
+use crate::gui::screen::dashboard::Plot;
+
+pub fn draw_big_o_chart<'a>(window: &[(f64, f64); 2], plot: &'a Plot) -> Chart<'a> {
     let x_labels = vec![
-        Span::styled(
-            format!("{}", window[0].0),
-            Style::default().add_modifier(Modifier::BOLD),
-        ),
-        Span::raw(format!(
-            "{}",
-            (window[0].0 + window[0].1) / 2.0
-        )),
-        Span::styled(
-            format!("{}", window[0].1),
-            Style::default().add_modifier(Modifier::BOLD),
-        ),
+        Span::styled(format!("{}", window[0].0), Style::default().add_modifier(Modifier::BOLD)),
+        Span::raw(format!("{}", (window[0].0 + window[0].1) / 2.0)),
+        Span::styled(format!("{}", window[0].1), Style::default().add_modifier(Modifier::BOLD)),
+    ];
+
+    let y_labels = vec![
+        Span::styled(format!("{}", window[1].0), Style::default().add_modifier(Modifier::BOLD)),
+        Span::raw(format!("{}", (window[1].0 + window[1].1) / 2.0)),
+        Span::styled(format!("{}", window[1].1), Style::default().add_modifier(Modifier::BOLD)),
     ];
 
     let datasets = vec![
@@ -38,49 +37,37 @@ pub fn draw_big_o_chart<'a>(window: &[(f64, f64); 2], data: &'a Vec<(f64, f64)>)
             .name("O(1)")
             .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Cyan))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(log n)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Yellow))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(n)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::LightBlue))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(n log n)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::LightGreen))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(n^2)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Green))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(2^n)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::Red))
-            .data(&data),
+            .data(&plot.lines[0].points),
         Dataset::default()
             .name("O(n!)")
-            .marker(
-                symbols::Marker::Dot
-            )
+            .marker(symbols::Marker::Dot)
             .style(Style::default().fg(Color::DarkGray))
-            .data(&data)
+            .data(&plot.lines[0].points)
     ];
 
     Chart::new(datasets)
@@ -106,10 +93,6 @@ pub fn draw_big_o_chart<'a>(window: &[(f64, f64); 2], data: &'a Vec<(f64, f64)>)
                 .title("Operations")
                 .style(Style::default().fg(Color::Gray))
                 .bounds([window[1].0, window[1].1])
-                .labels(vec![
-                    Span::styled(format!("{}", window[1].0), Style::default().add_modifier(Modifier::BOLD)),
-                    Span::raw("0"),
-                    Span::styled(format!("{}", window[1].1), Style::default().add_modifier(Modifier::BOLD)),
-                ]),
+                .labels(y_labels),
         )
 }
