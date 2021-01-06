@@ -14,7 +14,8 @@ Experimental
     - [Strassen](/src/math/multiplication/strassen.rs)
 - Collections
   - Order
-    - [MergeSort](/collections/order/merge_sort.rs)
+    - [MergeSort](/src/collections/order/merge_sort.rs)
+    - [Quick Sort](/src/collections/order/quick_sort.rs)
 
 ## References
 
