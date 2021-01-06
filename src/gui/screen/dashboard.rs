@@ -2,6 +2,8 @@ use std::{
     io::Stdout,
     rc::Rc,
     cell::RefCell,
+    ops::Mul,
+    borrow::BorrowMut,
     fmt::Error
 };
 
@@ -10,13 +12,10 @@ use tui::{
     layout::{Constraint, Direction, Layout},
     Frame,
 };
-use crossterm::event::KeyCode;
 
 use crate::gui::store::Store;
 use crate::gui::screen::Screenable;
 use crate::gui::modules::big_o_chart::draw_big_o_chart;
-use std::ops::Mul;
-use std::borrow::{Borrow, BorrowMut};
 
 const WINDOW: [(f64, f64); 2] = [
     (0.0, 100.0),
@@ -57,7 +56,7 @@ impl Dashboard {
                 Line {
                     label: String::from("O(1)"),
                     points: vec![],
-                    y: |x| 1.0
+                    y: |_| 1.0
                 },
                 Line {
                     label: String::from("O(log n)"),
