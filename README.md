@@ -16,6 +16,7 @@ Experimental
   - Ordering
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
     - [Quick Sort](/src/collections/ordering/quick_sort.rs)
+    - [Inversion Count](/src/collections/ordering/inversion_count.rs)
 
 ## References
 
