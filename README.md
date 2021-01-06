@@ -16,6 +16,7 @@ Demonstration of Asymptotic Notation without granular scrutiny on operation spec
     - [Strassen](/src/math/multiplication/strassen.rs)
 - Collections
   - Ordering
+    - [Bubble Sort](/src/collections/ordering/bubble_sort.rs)
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
     - [Merge Sort Inversion Count](/collections/ordering/merge_sort_inversion_count.rs)
     - [Quick Sort](/src/collections/ordering/quick_sort.rs)
