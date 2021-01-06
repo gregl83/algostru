@@ -49,13 +49,13 @@ fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
 // =================================================================================================
 //
 // if x length equals 0 or 1 then
-//     base case: return vector
+//     base case: return vector x
 //
-//     recursive sort:
-//     a = merge sort of first halve of x
-//     b = merge sort of second halve of x
+// recursive sort:
+//   a = merge sort of first halve of x
+//   b = merge sort of second halve of x
 //
-//     return result: x sorted
+// return result: vector x sorted
 pub fn sort(x: Vec<isize>) -> Vec<isize> {
     if x.len() <= 1 {
         return x;
