@@ -16,7 +16,7 @@ This repository is comprised of a command line interface tool and library of alg
 
 CLI tool *might* grow into toolset to aid with algorithm and data structure implementations.
 
-For now, there is simply a Big-O Cheatsheet rendered in your terminal using ASCII.
+For now, there is simply a **Big-O Cheatsheet** rendered in your terminal using ASCII.
 
 Either `cargo run` or `cargo install` should work fine from repository root.
 
