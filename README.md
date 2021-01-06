@@ -37,6 +37,7 @@ Either `cargo run` or `cargo install` should work fine from repository root.
 ## References
 
 - [Stanford Algorithms Specialization](https://www.coursera.org/specializations/algorithms)
+- [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
 
 ## License
 
