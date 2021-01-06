@@ -6,6 +6,8 @@ Algorithms (algo) and Data Structures (stru)
 
 Experimental
 
+Demonstration of Asymptotic Notation without granular scrutiny on operation specific performance.
+
 ## Contents
 
 - Math
