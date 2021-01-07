@@ -1,31 +1,33 @@
 pub mod strassen;
 
+use nalgebra::DMatrix;
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_strassen_products() {
-        let x: Vec<Vec<isize>> = vec![
-            vec![10, 9, 4, 3],
-            vec![8, 3, 4, 1],
-            vec![93, 1, 9, 3],
-            vec![2, 2, 7, 6]
-        ];
+        let x = DMatrix::from_row_slice(4, 4, &[
+            10, 9, 4, 3,
+            8, 3, 4, 1,
+            93, 1, 9, 3,
+            2, 2, 7, 6
+        ]);
 
-        let y: Vec<Vec<isize>> = vec![
-            vec![4, 5, 3, 5],
-            vec![4, 1, 2, 1],
-            vec![9, 8, 3, 5],
-            vec![6, 3, 7, 9]
-        ];
+        let y = DMatrix::from_row_slice(4, 4, &[
+            4, 5, 3, 5,
+            4, 1, 2, 1,
+            9, 8, 3, 5,
+            6, 3, 7, 9
+        ]);
 
-        let expectation: Vec<Vec<isize>> = vec![
-            vec![130, 100, 81, 106],
-            vec![86, 78, 49, 72],
-            vec![475, 547, 329, 538],
-            vec![115, 86, 73, 101]
-        ];
+        let expectation = DMatrix::from_row_slice(4, 4, &[
+            130, 100, 81, 106,
+            86, 78, 49, 72,
+            475, 547, 329, 538,
+            115, 86, 73, 101
+        ]);
 
         let product = strassen::multiply(x, y);
 
