@@ -10,7 +10,7 @@ type Matrix = Vec<Vec<isize>>;
 //
 // todo
 fn quarter_matrix(x: Matrix) -> (Matrix, Matrix, Matrix, Matrix) {
-    
+    (x.clone(), x.clone(), x.clone(), x.clone())
 }
 
 // Strassen Matrix Multiplication
@@ -23,7 +23,6 @@ fn quarter_matrix(x: Matrix) -> (Matrix, Matrix, Matrix, Matrix) {
 //
 // todo
 fn strassen(x: Matrix, y: Matrix) -> Matrix {
-    // fixme - implement strassen
     x
 }
 
