@@ -110,7 +110,7 @@ fn strassen(x: MSlice, y: MSlice) -> M {
     let p1_y: M = f - h;
     let p1 = strassen(a, to_slice(&p1_y));
 
-    let p2_x: M = a - b;
+    let p2_x: M = a + b;
     let p2 = strassen(to_slice(&p2_x), h);
 
     let p3_x: M = c + d;
