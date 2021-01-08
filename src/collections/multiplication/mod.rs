@@ -1,10 +1,10 @@
 pub mod strassen;
 
-use nalgebra::DMatrix;
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    use nalgebra::DMatrix;
 
     #[test]
     fn test_strassen_products() {

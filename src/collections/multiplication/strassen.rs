@@ -68,8 +68,8 @@ fn quarter_matrix<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>,
 // return result: matrix of size n_rows x n_cols with data
 fn combine_quarters(q1: M, q2: M, q3: M, q4: M, ) -> M {
     let quarters = [[&q1, &q3], [&q2, &q4]];
-    let n_rows = &q1.nrows() * &q3.nrows();
-    let n_cols = &q1.ncols() * &q2.ncols();
+    let n_rows = &q1.nrows() + &q3.nrows();
+    let n_cols = &q1.ncols() + &q2.ncols();
 
     let mut data = vec![];
 
