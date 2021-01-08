@@ -10,10 +10,10 @@ fn to_slice(m: &M) -> MSlice {
     m.slice((0, 0), (m.nrows(), m.ncols()))
 }
 
-// Quarter Matrix
+// Quadrants
 //
 // Input: reference to matrix slice x
-// Output: tuple of matrix slice x quartered
+// Output: tuple of quadrants from x
 // Assumption: x is square matrix
 //
 // =================================================================================================
@@ -21,8 +21,8 @@ fn to_slice(m: &M) -> MSlice {
 // x_rows, x_cols = x matrix shape
 // midpoint_row, midpoint_col = floored halves of x_rows and x_cols
 //
-// return result: tuple of matrix x quarters
-fn quarter_matrix<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>, MSlice<'a>) {
+// return result: tuple of matrix quadrants
+fn quadrants<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>, MSlice<'a>) {
     let divisor: usize = 2;
 
     let midpoint_row = x.nrows().div_floor(&divisor);
@@ -48,32 +48,32 @@ fn quarter_matrix<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>,
     (q1, q2, q3, q4)
 }
 
-// Combine Quarters
+// Combine Quadrants
 //
-// Input: matrix quarters q1..q4
-// Output: matrix of quarters combined
-// Assumption: quarters are square matrices
+// Input: matrix quadrants q1..q4
+// Output: matrix of combined quadrants
+// Assumption: quadrants are square matrices
 //
 // =================================================================================================
 //
-// quarters = (q1..q4)
+// quadrants = (q1..q4)
 // n_rows = q1_rows + q3_rows
 // n_cols = q1_cols + q2_cols
 //
 // data = []
-// loop quarters
-//     loop quarter values
+// loop quadrants
+//     loop quadrants values
 //         insert value into data
 //
 // return result: matrix of size n_rows x n_cols with data
-fn combine_quarters(q1: M, q2: M, q3: M, q4: M, ) -> M {
-    let quarters = [[&q1, &q3], [&q2, &q4]];
+fn combine_quadrants(q1: M, q2: M, q3: M, q4: M, ) -> M {
+    let quadrants = [[&q1, &q3], [&q2, &q4]];
     let n_rows = &q1.nrows() + &q3.nrows();
     let n_cols = &q1.ncols() + &q2.ncols();
 
     let mut data = vec![];
 
-    for halve in quarters.iter() {
+    for halve in quadrants.iter() {
         let (top, bottom) = (halve[0], halve[1]);
         let n_cols = top.ncols();
         for col in 0..n_cols {
@@ -104,8 +104,8 @@ fn strassen(x: MSlice, y: MSlice) -> M {
         return x * y;
     }
 
-    let (a, b, c, d) = quarter_matrix(&x);
-    let (e, f, g, h) = quarter_matrix(&y);
+    let (a, b, c, d) = quadrants(&x);
+    let (e, f, g, h) = quadrants(&y);
 
     let p1_y: M = f - h;
     let p1 = strassen(a, to_slice(&p1_y));
@@ -136,7 +136,7 @@ fn strassen(x: MSlice, y: MSlice) -> M {
     let q3: M = &p3 + &p4;
     let q4: M = &p1 + &p5 - &p3 - &p7;
 
-    combine_quarters(q1, q2, q3, q4)
+    combine_quadrants(q1, q2, q3, q4)
 }
 
 pub fn multiply(x: M, y: M) -> M {
@@ -148,7 +148,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_quarter_matrix() {
+    fn test_quadrants() {
         let x = DMatrix::from_row_slice(4, 4, &[
             10, 9, 4, 3,
             8, 3, 4, 1,
@@ -177,7 +177,7 @@ mod tests {
 
         let x_slice = to_slice(&x);
 
-        let (q1, q2, q3, q4) = quarter_matrix(&x_slice);
+        let (q1, q2, q3, q4) = quadrants(&x_slice);
 
         assert_eq!(q1, expectation[0]);
         assert_eq!(q2, expectation[1]);
@@ -186,7 +186,7 @@ mod tests {
     }
 
     #[test]
-    fn test_combine_quarters() {
+    fn test_combine_quadrants() {
         let q1 = DMatrix::from_row_slice(2, 2, &[
             10, 9,
             8, 3
@@ -211,7 +211,7 @@ mod tests {
             2, 2, 7, 6
         ]);
 
-        let result = combine_quarters(q1, q2, q3, q4);
+        let result = combine_quadrants(q1, q2, q3, q4);
 
         assert_eq!(result, expectation);
     }
