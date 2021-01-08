@@ -3,7 +3,10 @@ use std::ops::{Div, Mul};
 use nalgebra::{DMatrix, DMatrixSlice, Matrix};
 use num_integer::Integer;
 
-fn to_slice(m: &DMatrix<isize>) -> DMatrixSlice<isize> {
+type M = DMatrix<isize>;
+type MSlice<'a> = DMatrixSlice<'a, isize>;
+
+fn to_slice(m: &M) -> MSlice {
     m.slice((0, 0), (m.nrows(), m.ncols()))
 }
 
@@ -19,12 +22,7 @@ fn to_slice(m: &DMatrix<isize>) -> DMatrixSlice<isize> {
 // midpoint_row, midpoint_col = floored halves of x_rows and x_cols
 //
 // return result: tuple of matrix x quarters
-fn quarter_matrix<'a>(x: &'a DMatrixSlice<'a, isize>) -> (
-    DMatrixSlice<'a, isize>,
-    DMatrixSlice<'a, isize>,
-    DMatrixSlice<'a, isize>,
-    DMatrixSlice<'a, isize>
-) {
+fn quarter_matrix<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>, MSlice<'a>) {
     let divisor: usize = 2;
 
     let midpoint_row = x.nrows().div_floor(&divisor);
@@ -68,12 +66,7 @@ fn quarter_matrix<'a>(x: &'a DMatrixSlice<'a, isize>) -> (
 //         insert value into data
 //
 // return result: matrix of size n_rows x n_cols with data
-fn combine_quarters(
-    q1: DMatrix<isize>,
-    q2: DMatrix<isize>,
-    q3: DMatrix<isize>,
-    q4: DMatrix<isize>,
-) -> DMatrix<isize> {
+fn combine_quarters(q1: M, q2: M, q3: M, q4: M, ) -> M {
     let quarters = [&q1, &q4, &q2, &q3];
     let n_rows = &q1.nrows() * &q3.nrows();
     let n_cols = &q1.ncols() * &q2.ncols();
@@ -98,7 +91,7 @@ fn combine_quarters(
 // =================================================================================================
 //
 // todo
-fn strassen(x: DMatrixSlice<isize>, y: DMatrixSlice<isize>) -> DMatrix<isize> {
+fn strassen(x: MSlice, y: MSlice) -> M {
     if x.nrows() == 1 && x.ncols() == 1 {
         return x * y;
     }
@@ -106,39 +99,39 @@ fn strassen(x: DMatrixSlice<isize>, y: DMatrixSlice<isize>) -> DMatrix<isize> {
     let (a, b, c, d) = quarter_matrix(&x);
     let (e, f, g, h) = quarter_matrix(&y);
 
-    let p1_y: DMatrix<isize> = f - h;
+    let p1_y: M = f - h;
     let p1 = strassen(a, to_slice(&p1_y));
 
-    let p2_x: DMatrix<isize> = a - b;
+    let p2_x: M = a - b;
     let p2 = strassen(to_slice(&p2_x), h);
 
-    let p3_x: DMatrix<isize> = c + d;
+    let p3_x: M = c + d;
     let p3 = strassen(to_slice(&p3_x), e);
 
-    let p4_y: DMatrix<isize> = g - e;
+    let p4_y: M = g - e;
     let p4 = strassen(d, to_slice(&p4_y));
 
-    let p5_x: DMatrix<isize> = a + d;
-    let p5_y: DMatrix<isize> = e + h;
+    let p5_x: M = a + d;
+    let p5_y: M = e + h;
     let p5 = strassen(to_slice(&p5_x), to_slice(&p5_y));
 
-    let p6_x: DMatrix<isize> = b - d;
-    let p6_y: DMatrix<isize> = g + h;
+    let p6_x: M = b - d;
+    let p6_y: M = g + h;
     let p6 = strassen(to_slice(&p6_x), to_slice(&p6_y));
 
-    let p7_x: DMatrix<isize> = a - c;
-    let p7_y: DMatrix<isize> = e + f;
+    let p7_x: M = a - c;
+    let p7_y: M = e + f;
     let p7 = strassen(to_slice(&p7_x), to_slice(&p7_y));
 
-    let q1: DMatrix<isize> = &p5 + &p4 - &p2 + &p6;
-    let q2: DMatrix<isize> = &p1 + &p2;
-    let q3: DMatrix<isize> = &p3 + &p4;
-    let q4: DMatrix<isize> = &p1 + &p5 - &p3 - &p7;
+    let q1: M = &p5 + &p4 - &p2 + &p6;
+    let q2: M = &p1 + &p2;
+    let q3: M = &p3 + &p4;
+    let q4: M = &p1 + &p5 - &p3 - &p7;
 
     combine_quarters(q1, q2, q3, q4)
 }
 
-pub fn multiply(x: DMatrix<isize>, y: DMatrix<isize>) -> DMatrix<isize> {
+pub fn multiply(x: M, y: M) -> M {
     strassen(to_slice(&x), to_slice(&y))
 }
 
