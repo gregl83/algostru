@@ -100,7 +100,7 @@ fn combine_quarters(q1: M, q2: M, q3: M, q4: M, ) -> M {
 //
 // todo
 fn strassen(x: MSlice, y: MSlice) -> M {
-    if x.nrows() == 1 && x.ncols() == 1 {
+    if x.len() == 1 {
         return x * y;
     }
 
