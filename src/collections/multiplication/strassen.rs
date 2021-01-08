@@ -1,15 +1,16 @@
 use std::ops::{Div, Mul};
 
-use nalgebra::{
-    DMatrix,
-    DMatrixSlice
-};
+use nalgebra::{DMatrix, DMatrixSlice, Matrix};
 use num_integer::Integer;
+
+fn to_slice(m: &DMatrix<isize>) -> DMatrixSlice<isize> {
+    m.slice((0, 0), (m.nrows(), m.ncols()))
+}
 
 // Quarter Matrix
 //
-// Input: n-vector vector x
-// Output: tuple of vector x quartered
+// Input: reference to matrix slice x
+// Output: tuple of matrix slice x quartered
 // Assumption: x is square matrix
 //
 // =================================================================================================
@@ -17,17 +18,17 @@ use num_integer::Integer;
 // x_rows, x_cols = x matrix shape
 // midpoint_row, midpoint_col = floored halves of x_rows and x_cols
 //
-// return result: quartered matrix x wrapped in tuple
-fn quarter_matrix(x: &DMatrix<isize>) -> (
-    DMatrixSlice<isize>,
-    DMatrixSlice<isize>,
-    DMatrixSlice<isize>,
-    DMatrixSlice<isize>
+// return result: tuple of matrix x quarters
+fn quarter_matrix<'a>(x: &'a DMatrixSlice<'a, isize>) -> (
+    DMatrixSlice<'a, isize>,
+    DMatrixSlice<'a, isize>,
+    DMatrixSlice<'a, isize>,
+    DMatrixSlice<'a, isize>
 ) {
-    let two: usize = 2;
+    let divisor: usize = 2;
 
-    let midpoint_row = x.nrows().div_floor(&two);
-    let midpoint_cols = x.ncols().div_floor(&two);
+    let midpoint_row = x.nrows().div_floor(&divisor);
+    let midpoint_cols = x.ncols().div_floor(&divisor);
 
     let q1 = x.slice(
         (0, 0),
@@ -49,6 +50,45 @@ fn quarter_matrix(x: &DMatrix<isize>) -> (
     (q1, q2, q3, q4)
 }
 
+// Combine Quarters
+//
+// Input: matrix quarters q1..q4
+// Output: matrix of quarters combined
+// Assumption: quarters are square matrices
+//
+// =================================================================================================
+//
+// quarters = (q1..q4)
+// n_rows = q1_rows + q3_rows
+// n_cols = q1_cols + q2_cols
+//
+// data = []
+// loop quarters
+//     loop quarter values
+//         insert value into data
+//
+// return result: matrix of size n_rows x n_cols with data
+fn combine_quarters(
+    q1: DMatrix<isize>,
+    q2: DMatrix<isize>,
+    q3: DMatrix<isize>,
+    q4: DMatrix<isize>,
+) -> DMatrix<isize> {
+    let quarters = [&q1, &q4, &q2, &q3];
+    let n_rows = &q1.nrows() * &q3.nrows();
+    let n_cols = &q1.ncols() * &q2.ncols();
+
+    let mut data = vec![];
+
+    for q in quarters.iter() {
+        for val in q.iter() {
+            data.push(*val);
+        }
+    }
+
+    DMatrix::from_vec(n_rows, n_cols, data)
+}
+
 // Strassen Matrix Multiplication
 //
 // Input: n-vector vectors x and y
@@ -58,52 +98,48 @@ fn quarter_matrix(x: &DMatrix<isize>) -> (
 // =================================================================================================
 //
 // todo
-fn strassen(x: DMatrix<isize>, y: DMatrix<isize>) -> DMatrix<isize> {
+fn strassen(x: DMatrixSlice<isize>, y: DMatrixSlice<isize>) -> DMatrix<isize> {
     if x.nrows() == 1 && x.ncols() == 1 {
         return x * y;
     }
 
-    x
+    let (a, b, c, d) = quarter_matrix(&x);
+    let (e, f, g, h) = quarter_matrix(&y);
+
+    let p1_y: DMatrix<isize> = f - h;
+    let p1 = strassen(a, to_slice(&p1_y));
+
+    let p2_x: DMatrix<isize> = a - b;
+    let p2 = strassen(to_slice(&p2_x), h);
+
+    let p3_x: DMatrix<isize> = c + d;
+    let p3 = strassen(to_slice(&p3_x), e);
+
+    let p4_y: DMatrix<isize> = g - e;
+    let p4 = strassen(d, to_slice(&p4_y));
+
+    let p5_x: DMatrix<isize> = a + d;
+    let p5_y: DMatrix<isize> = e + h;
+    let p5 = strassen(to_slice(&p5_x), to_slice(&p5_y));
+
+    let p6_x: DMatrix<isize> = b - d;
+    let p6_y: DMatrix<isize> = g + h;
+    let p6 = strassen(to_slice(&p6_x), to_slice(&p6_y));
+
+    let p7_x: DMatrix<isize> = a - c;
+    let p7_y: DMatrix<isize> = e + f;
+    let p7 = strassen(to_slice(&p7_x), to_slice(&p7_y));
+
+    let q1: DMatrix<isize> = &p5 + &p4 - &p2 + &p6;
+    let q2: DMatrix<isize> = &p1 + &p2;
+    let q3: DMatrix<isize> = &p3 + &p4;
+    let q4: DMatrix<isize> = &p1 + &p5 - &p3 - &p7;
+
+    combine_quarters(q1, q2, q3, q4)
 }
 
-// def strassen(x, y):
-// """
-//     Computes matrix product by divide and conquer approach, recursively.
-//     Input: nxn matrices x and y
-//     Output: nxn matrix, product of x and y
-//     """
-//
-// # Base case when size of matrices is 1x1
-// if len(x) == 1:
-// return x * y
-//
-// # Splitting the matrices into quadrants. This will be done recursively
-// # untill the base case is reached.
-// a, b, c, d = split(x)
-// e, f, g, h = split(y)
-//
-// # Computing the 7 products, recursively (p1, p2...p7)
-// p1 = strassen(a, f - h)
-// p2 = strassen(a + b, h)
-// p3 = strassen(c + d, e)
-// p4 = strassen(d, g - e)
-// p5 = strassen(a + d, e + h)
-// p6 = strassen(b - d, g + h)
-// p7 = strassen(a - c, e + f)
-//
-// # Computing the values of the 4 quadrants of the final matrix c
-// c11 = p5 + p4 - p2 + p6
-// c12 = p1 + p2
-// c21 = p3 + p4
-// c22 = p1 + p5 - p3 - p7
-//
-// # Combining the 4 quadrants into a single matrix by stacking horizontally and vertically.
-// c = np.vstack((np.hstack((c11, c12)), np.hstack((c21, c22))))
-//
-// return c
-
 pub fn multiply(x: DMatrix<isize>, y: DMatrix<isize>) -> DMatrix<isize> {
-    strassen(x, y)
+    strassen(to_slice(&x), to_slice(&y))
 }
 
 #[cfg(test)]
@@ -138,11 +174,44 @@ mod tests {
             ])
         ];
 
-        let (q1, q2, q3, q4) = quarter_matrix(&x);
+        let x_slice = to_slice(&x);
+
+        let (q1, q2, q3, q4) = quarter_matrix(&x_slice);
 
         assert_eq!(q1, expectation[0]);
         assert_eq!(q2, expectation[1]);
         assert_eq!(q3, expectation[2]);
         assert_eq!(q4, expectation[3]);
+    }
+
+    #[test]
+    fn test_combine_quarters() {
+        let q1 = DMatrix::from_row_slice(2, 2, &[
+            10, 9,
+            8, 3
+        ]);
+        let q2 = DMatrix::from_row_slice(2, 2, &[
+            4, 3,
+            4, 1
+        ]);
+        let q3 = DMatrix::from_row_slice(2, 2, &[
+            93, 1,
+            2, 2
+        ]);
+        let q4 = DMatrix::from_row_slice(2, 2, &[
+            9, 3,
+            7, 6
+        ]);
+
+        let expectation = DMatrix::from_row_slice(4, 4, &[
+            10, 9, 4, 3,
+            8, 3, 4, 1,
+            93, 1, 9, 3,
+            2, 2, 7, 6
+        ]);
+
+        let result = combine_quarters(q1, q2, q3, q4);
+
+        assert_eq!(result, expectation);
     }
 }
