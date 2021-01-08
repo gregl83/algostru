@@ -1,6 +1,7 @@
-use std::ops::{Div, Mul};
-
-use nalgebra::{DMatrix, DMatrixSlice, Matrix};
+use nalgebra::{
+    DMatrix,
+    DMatrixSlice
+};
 use num_integer::Integer;
 
 type M = DMatrix<isize>;
