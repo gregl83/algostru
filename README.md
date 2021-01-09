@@ -33,6 +33,8 @@ Either `cargo run` or `cargo install` should work fine from repository root.
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
     - [Merge Sort Inversion Count](/src/collections/ordering/merge_sort_inversion_count.rs)
     - [Quick Sort](/src/collections/ordering/quick_sort.rs)
+  - Search
+    - [Closest Pair](/src/collections/search/closest_pair.rs)
 
 ## References
 

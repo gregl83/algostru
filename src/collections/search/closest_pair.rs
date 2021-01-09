@@ -10,7 +10,7 @@ type Plane = Vec<Point>;
 //
 // todo
 fn closest_pair(x: Plane) -> (Point, Point) {
-    (x[0].0, x[0].1)
+    ((x[0].0, x[0].1), (x[0].0, x[0].1))
 }
 
 // Find Closest Pair
