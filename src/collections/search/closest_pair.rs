@@ -1,16 +1,8 @@
+use crate::collections::midpoint;
+
 enum Axis { X, Y }
 type Point = (isize, isize);
 type Plane = Vec<Point>;
-
-fn midpoint(x: &Plane) -> usize {
-    if x.is_empty() {
-        return 0;
-    }
-    if x.len() % 2 == 0 {
-        return x.len() / 2;
-    }
-    return (x.len() / 2) + 1;
-}
 
 fn get_point_axis(point: Point, axis: &Axis) -> isize {
     match axis {
@@ -67,9 +59,11 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 // =================================================================================================
 //
 // todo
-fn closest_split_pair(px: Plane, py: Plane) -> (Point, Point) {
+fn closest_split_pair(px: Plane, py: Plane, delta: usize) -> (Point, Point) {
     let midpoint = midpoint(&px);
     let x_median = &px[midpoint];
+
+    // Sy = q1 -> ql < delta
 
     (px[0], px[1])
 }
@@ -123,48 +117,6 @@ pub fn find(x: Plane) -> (Point, Point) {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_midpoint_index_even_length() {
-        let x: Plane = vec![
-            (0, 1),
-            (1, 2)
-        ];
-
-        let expectation_l = vec![
-            (0, 1),
-        ];
-        let expectation_r = vec![
-            (1, 2)
-        ];
-
-        let midpoint = midpoint(&x);
-
-        assert_eq!(x[..midpoint].to_vec(), expectation_l);
-        assert_eq!(x[midpoint..].to_vec(), expectation_r);
-    }
-
-    #[test]
-    fn test_midpoint_index_odd_length() {
-        let x: Plane = vec![
-            (2, 3),
-            (3, 4),
-            (4, 5)
-        ];
-
-        let expectation_l = vec![
-            (2, 3),
-            (3, 4),
-        ];
-        let expectation_r = vec![
-            (4, 5)
-        ];
-
-        let midpoint = midpoint(&x);
-
-        assert_eq!(x[..midpoint].to_vec(), expectation_l);
-        assert_eq!(x[midpoint..].to_vec(), expectation_r);
-    }
 
     #[test]
     fn test_get_point_axis() {
