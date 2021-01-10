@@ -1,3 +1,5 @@
+use crate::collections::midpoint;
+
 // Merge Vectors
 //
 // Input: two sorted vectors x and y
@@ -61,7 +63,7 @@ pub fn sort(x: Vec<isize>) -> Vec<isize> {
         return x;
     }
 
-    let midpoint = x.len() / 2;
+    let midpoint = midpoint(&x);
     let a = &x[..midpoint];
     let b = &x[midpoint..];
 
