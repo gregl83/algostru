@@ -2,6 +2,16 @@ enum Axis { X, Y }
 type Point = (isize, isize);
 type Plane = Vec<Point>;
 
+fn midpoint(x: &Plane) -> usize {
+    if x.is_empty() {
+        return 0;
+    }
+    if x.len() % 2 == 0 {
+        return x.len() / 2;
+    }
+    return (x.len() / 2) + 1;
+}
+
 fn get_point_axis(point: Point, axis: &Axis) -> isize {
     match axis {
         Axis::X => point.0,
@@ -39,7 +49,7 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
         return x;
     }
 
-    let midpoint = x.len() / 2;
+    let midpoint = midpoint(&x);
     let a = &x[..midpoint];
     let b = &x[midpoint..];
 
@@ -47,6 +57,21 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
     let d = sort_pairs(b.to_vec(), &axis);
 
     merge_pairs(c, d, &axis)
+}
+
+// Closest Split Pair
+//
+// Input: Plane x of n Point elements
+// Output: pair of Point elements from x that are closest
+//
+// =================================================================================================
+//
+// todo
+fn closest_split_pair(px: Plane, py: Plane) -> (Point, Point) {
+    let midpoint = midpoint(&px);
+    let x_median = &px[midpoint];
+
+    (px[0], px[1])
 }
 
 // Closest Pair
@@ -57,8 +82,27 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 // =================================================================================================
 //
 // todo
-fn closest_pair(x: Plane) -> (Point, Point) {
-    ((x[0].0, x[0].1), (x[0].0, x[0].1))
+fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
+    if px.len() <= 3 {
+        // fixme - base case - quicker to brute force
+    }
+
+    let midpoint = midpoint(&px);
+    let lx = &px[..midpoint];
+    let ly = &py[..midpoint];
+    let rx = &px[midpoint..];
+    let ry = &py[midpoint..];
+
+    return (px[0], px[1])
+
+    // todo - to_vec expensive; work in slices
+    //let (l1, l2) = closest_pair(lx.to_vec(), ly.to_vec());
+    //let (r1, r2) = closest_pair(rx.to_vec(), ry.to_vec());
+    //let (s1, s2) = closest_split_pair(px, py);
+
+
+    // fixme - return best of (l1, l2) or (r1, r2) or (s1, s2)
+    //return (l1, l2)
 }
 
 // Find Closest Pair
@@ -70,12 +114,57 @@ fn closest_pair(x: Plane) -> (Point, Point) {
 //
 // todo
 pub fn find(x: Plane) -> (Point, Point) {
-    closest_pair(x)
+    let px: Plane = sort_pairs(x.clone(), &Axis::X); // todo - optimize O(n) clone w/borrow
+    let py: Plane = sort_pairs(x, &Axis::Y);
+
+    closest_pair(px, py)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_midpoint_index_even_length() {
+        let x: Plane = vec![
+            (0, 1),
+            (1, 2)
+        ];
+
+        let expectation_l = vec![
+            (0, 1),
+        ];
+        let expectation_r = vec![
+            (1, 2)
+        ];
+
+        let midpoint = midpoint(&x);
+
+        assert_eq!(x[..midpoint].to_vec(), expectation_l);
+        assert_eq!(x[midpoint..].to_vec(), expectation_r);
+    }
+
+    #[test]
+    fn test_midpoint_index_odd_length() {
+        let x: Plane = vec![
+            (2, 3),
+            (3, 4),
+            (4, 5)
+        ];
+
+        let expectation_l = vec![
+            (2, 3),
+            (3, 4),
+        ];
+        let expectation_r = vec![
+            (4, 5)
+        ];
+
+        let midpoint = midpoint(&x);
+
+        assert_eq!(x[..midpoint].to_vec(), expectation_l);
+        assert_eq!(x[midpoint..].to_vec(), expectation_r);
+    }
 
     #[test]
     fn test_get_point_axis() {
