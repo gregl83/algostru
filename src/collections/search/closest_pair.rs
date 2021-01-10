@@ -78,6 +78,15 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_get_point_axis() {
+        let point: Point = (0, 1);
+        let axis = Axis::X;
+
+        assert_eq!(get_point_axis(point, &Axis::X), point.0);
+        assert_eq!(get_point_axis(point, &Axis::Y), point.1);
+    }
+
+    #[test]
     fn test_merge_pairs() {
         let a: Plane = vec![
             (0, 1),
