@@ -105,13 +105,12 @@ fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
     let (l1, l2) = closest_pair(lx.to_vec(), ly.to_vec());
     let (r1, r2) = closest_pair(rx.to_vec(), ry.to_vec());
 
-    // let delta = f64_min(
-    //     &[
-    //         euclidean_distance(l1, l2),
-    //         euclidean_distance(r1, r2)
-    //     ]
-    // );
-    let delta = 0.0;
+    let delta = f64_min(
+        &[
+            euclidean_distance(l1, l2),
+            euclidean_distance(r1, r2)
+        ]
+    );
     let (s1, s2) = closest_split_pair(px, py, delta);
 
 
@@ -137,6 +136,12 @@ pub fn find(x: Plane) -> (Point, Point) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_f64_min() {
+        let x = [2.0, 1.0, -10.0, 5.0, f64::NAN];
+        assert_eq!(f64_min(&x), -10.0);
+    }
 
     #[test]
     fn test_euclidean_distance() {
