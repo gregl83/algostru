@@ -1,3 +1,6 @@
+use std::f64;
+use std::cmp::min;
+
 use crate::collections::midpoint;
 
 enum Axis { X, Y }
@@ -9,6 +12,16 @@ fn get_point_axis(point: Point, axis: &Axis) -> isize {
         Axis::X => point.0,
         Axis::Y => point.1,
     }
+}
+
+fn euclidean_distance(a: Point, b: Point) -> f64 {
+    let x_delta = (a.0 - b.0) as f64;
+    let y_delta = (a.1 - b.1) as f64;
+    (x_delta.powf(2.0) + y_delta.powf(2.0)).sqrt()
+}
+
+fn f64_min(vals: &[f64]) -> f64 {
+    vals.iter().fold(f64::INFINITY, |a, &b| a.min(b))
 }
 
 fn merge_pairs(a: Plane, b: Plane, axis: &Axis) -> Plane {
@@ -59,7 +72,7 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 // =================================================================================================
 //
 // todo
-fn closest_split_pair(px: Plane, py: Plane, delta: usize) -> (Point, Point) {
+fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> (Point, Point) {
     let midpoint = midpoint(&px);
     let x_median = &px[midpoint];
 
@@ -79,6 +92,7 @@ fn closest_split_pair(px: Plane, py: Plane, delta: usize) -> (Point, Point) {
 fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
     if px.len() <= 3 {
         // fixme - base case - quicker to brute force
+        return (px[0], px[1])
     }
 
     let midpoint = midpoint(&px);
@@ -87,16 +101,22 @@ fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
     let rx = &px[midpoint..];
     let ry = &py[midpoint..];
 
-    return (px[0], px[1])
-
     // todo - to_vec expensive; work in slices
-    //let (l1, l2) = closest_pair(lx.to_vec(), ly.to_vec());
-    //let (r1, r2) = closest_pair(rx.to_vec(), ry.to_vec());
-    //let (s1, s2) = closest_split_pair(px, py);
+    let (l1, l2) = closest_pair(lx.to_vec(), ly.to_vec());
+    let (r1, r2) = closest_pair(rx.to_vec(), ry.to_vec());
+
+    // let delta = f64_min(
+    //     &[
+    //         euclidean_distance(l1, l2),
+    //         euclidean_distance(r1, r2)
+    //     ]
+    // );
+    let delta = 0.0;
+    let (s1, s2) = closest_split_pair(px, py, delta);
 
 
     // fixme - return best of (l1, l2) or (r1, r2) or (s1, s2)
-    //return (l1, l2)
+    return (l1, l2)
 }
 
 // Find Closest Pair
@@ -117,6 +137,19 @@ pub fn find(x: Plane) -> (Point, Point) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_euclidean_distance() {
+        let tests: [(Point, Point, f64); 3] = [
+            ((2, 2), (2, 2), 0.0),
+            ((-2, 2), (2, -2), 5.656854249492381),
+            ((5, 6), (7, 8), 2.8284271247461903)
+        ];
+
+        for test in tests.to_vec() {
+            assert_eq!(euclidean_distance(test.0, test.1), test.2);
+        }
+    }
 
     #[test]
     fn test_get_point_axis() {
