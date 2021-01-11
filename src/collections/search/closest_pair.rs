@@ -2,6 +2,7 @@ use std::f64;
 use std::cmp::min;
 
 use crate::collections::midpoint;
+use std::borrow::Borrow;
 
 enum Axis { X, Y }
 type Point = (isize, isize);
@@ -22,6 +23,29 @@ fn euclidean_distance(a: Point, b: Point) -> f64 {
 
 fn f64_min(vals: &[f64]) -> f64 {
     vals.iter().fold(f64::INFINITY, |a, &b| a.min(b))
+}
+
+fn iterate_closest_pair(x: &[(Point, Point)]) -> &(Point, Point) {
+    let mut closest_pair: &(Point, Point) = &x[0];
+    let mut best_euclidean_distance: f64 = f64::MAX;
+
+    for (i, pair) in x.iter().enumerate() {
+        let delta = euclidean_distance(pair.0, pair.1);
+
+        if i == 0 {
+            closest_pair = pair;
+            best_euclidean_distance = delta;
+            continue;
+        }
+
+        if f64_min(&[delta, best_euclidean_distance]) == delta {
+            closest_pair = pair;
+            best_euclidean_distance = delta;
+            continue;
+        }
+    }
+
+    closest_pair
 }
 
 fn merge_pairs(a: Plane, b: Plane, axis: &Axis) -> Plane {
@@ -163,6 +187,20 @@ mod tests {
 
         assert_eq!(get_point_axis(point, &Axis::X), point.0);
         assert_eq!(get_point_axis(point, &Axis::Y), point.1);
+    }
+
+    #[test]
+    fn test_iterate_closest_pair() {
+        let pairs: [(Point, Point); 3] = [
+            ((0, 0), (1, 10)),
+            ((1, 1), (2, 15)),
+            ((2, 2), (3, 3)),
+        ];
+        let expectation = ((2, 2), (3, 3));
+
+        let pair = iterate_closest_pair(&pairs);
+
+        assert_eq!(pair, &expectation);
     }
 
     #[test]
