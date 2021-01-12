@@ -9,13 +9,14 @@ mod tests {
         let plane = vec![
             (0, 2),
             (4, 6),
-            (9, 10),
-            (10, 12)
+            (6, 8),
+            (10, 12),
+            (11, 13)
         ];
 
         let pair = closest_pair::find(plane.clone());
 
-        assert_eq!(pair, (plane[2], plane[3]));
+        assert_eq!(pair, (plane[3], plane[4]));
     }
 
     #[test]

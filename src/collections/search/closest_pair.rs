@@ -6,6 +6,7 @@ use std::borrow::Borrow;
 
 enum Axis { X, Y }
 type Point = (isize, isize);
+type PointPair = (Point, Point);
 type Plane = Vec<Point>;
 
 fn get_point_axis(point: Point, axis: &Axis) -> isize {
@@ -25,7 +26,7 @@ fn f64_min(vals: &[f64]) -> f64 {
     vals.iter().fold(f64::INFINITY, |a, &b| a.min(b))
 }
 
-fn iterate_closest_pair(x: &[(Point, Point)]) -> &(Point, Point) {
+fn iterate_closest_pair(x: &[PointPair]) -> &PointPair {
     let mut closest_pair: &(Point, Point) = &x[0];
     let mut best_euclidean_distance: f64 = f64::MAX;
 
@@ -96,13 +97,33 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 // =================================================================================================
 //
 // todo
-fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> (Point, Point) {
+fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> Option<PointPair> {
     let midpoint = midpoint(&px);
-    let x_median = &px[midpoint];
+    let pxl = &px[..midpoint];
+    let x_median = pxl.last().unwrap().0 as f64;
 
-    // Sy = q1 -> ql < delta
+    let sy: Vec<&Point> = py.iter().filter(|p| {
+        let x = p.0 as f64;
+        x >= (x_median - delta) && x <= (x_median + delta)
+    }).collect();
 
-    (px[0], px[1])
+    let mut closest_pair: Option<PointPair> = None;
+    let mut best_euclidean_distance = delta;
+
+    for i in 0..(sy.len() - 1) {
+        let max_range  = min(7, sy.len() - i);
+        for j in 1..max_range {
+            let euclidean_distance = euclidean_distance(*sy[i], *sy[i + j]);
+            if euclidean_distance < best_euclidean_distance {
+                closest_pair = Some(
+                    (sy[i].clone(), sy[i + j].clone())
+                );
+                best_euclidean_distance = euclidean_distance;
+            }
+        }
+    }
+
+    closest_pair
 }
 
 // Closest Pair
@@ -135,11 +156,19 @@ fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
             euclidean_distance(r1, r2)
         ]
     );
-    let (s1, s2) = closest_split_pair(px, py, delta);
 
+    if let Some((s1, s2)) = closest_split_pair(px, py, delta) {
+        return *iterate_closest_pair(&[
+            (l1, l2),
+            (r1, r2),
+            (s1, s2),
+        ]);
+    }
 
-    // fixme - return best of (l1, l2) or (r1, r2) or (s1, s2)
-    return (l1, l2)
+    *iterate_closest_pair(&[
+        (l1, l2),
+        (r1, r2),
+    ])
 }
 
 // Find Closest Pair

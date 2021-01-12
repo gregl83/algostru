@@ -18,10 +18,10 @@ mod tests {
 
     #[test]
     fn test_midpoint_index_even_length() {
-        let x: Vec<isize> = vec![0, 1];
+        let x: Vec<isize> = vec![0, 1, 2, 3];
 
-        let expectation_l = vec![0];
-        let expectation_r = vec![1];
+        let expectation_l = vec![0, 1];
+        let expectation_r = vec![2, 3];
 
         let midpoint = midpoint(&x);
 
@@ -31,10 +31,10 @@ mod tests {
 
     #[test]
     fn test_midpoint_index_odd_length() {
-        let x: Vec<isize> = vec![2, 3, 4];
+        let x: Vec<isize> = vec![0, 1, 2, 3, 4];
 
-        let expectation_l = vec![2, 3];
-        let expectation_r = vec![4];
+        let expectation_l = vec![0, 1, 2];
+        let expectation_r = vec![3, 4];
 
         let midpoint = midpoint(&x);
 
