@@ -1,4 +1,4 @@
-use crate::collections::midpoint;
+use crate::collections::vec_range_midpoint;
 
 // Merge Vectors and Count Inversions
 //
@@ -68,7 +68,7 @@ pub fn sort(x: Vec<isize>) -> (Vec<isize>, usize) {
         return (x, 0);
     }
 
-    let midpoint = midpoint(&x);
+    let midpoint = vec_range_midpoint(&x);
     let a = &x[..midpoint];
     let b = &x[midpoint..];
 

@@ -1,30 +1,7 @@
 use std::f64;
 use std::cmp::min;
 
-use crate::collections::midpoint;
-use std::borrow::Borrow;
-
-enum Axis { X, Y }
-type Point = (isize, isize);
-type PointPair = (Point, Point);
-type Plane = Vec<Point>;
-
-fn get_point_axis(point: Point, axis: &Axis) -> isize {
-    match axis {
-        Axis::X => point.0,
-        Axis::Y => point.1,
-    }
-}
-
-fn euclidean_distance(a: Point, b: Point) -> f64 {
-    let x_delta = (a.0 - b.0) as f64;
-    let y_delta = (a.1 - b.1) as f64;
-    (x_delta.powf(2.0) + y_delta.powf(2.0)).sqrt()
-}
-
-fn f64_min(vals: &[f64]) -> f64 {
-    vals.iter().fold(f64::INFINITY, |a, &b| a.min(b))
-}
+use crate::collections::{Axis, Point, PointPair, Plane, f64_min, vec_range_midpoint, euclidean_distance, get_point_value_by_axis};
 
 fn iterate_closest_pair(x: &[PointPair]) -> &PointPair {
     let mut closest_pair: &(Point, Point) = &x[0];
@@ -55,7 +32,9 @@ fn merge_pairs(a: Plane, b: Plane, axis: &Axis) -> Plane {
     let mut b_index = 0;
 
     while a_index < a.len() && b_index < b.len() {
-        if get_point_axis(a[a_index], &axis) <= get_point_axis(b[b_index], &axis) {
+        let a_axis = get_point_value_by_axis(a[a_index], &axis);
+        let b_axis = get_point_value_by_axis(b[b_index], &axis);
+        if a_axis <= b_axis {
             merged.push(a[a_index]);
             a_index += 1;
         } else {
@@ -79,7 +58,7 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
         return x;
     }
 
-    let midpoint = midpoint(&x);
+    let midpoint = vec_range_midpoint(&x);
     let a = &x[..midpoint];
     let b = &x[midpoint..];
 
@@ -98,7 +77,7 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 //
 // todo
 fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> Option<PointPair> {
-    let midpoint = midpoint(&px);
+    let midpoint = vec_range_midpoint(&px);
     let pxl = &px[..midpoint];
     let x_median = pxl.last().unwrap().0 as f64;
 
@@ -135,12 +114,17 @@ fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> Option<PointPair> {
 //
 // todo
 fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
-    if px.len() <= 3 {
-        // fixme - base case - quicker to brute force
-        return (px[0], px[1])
+    if px.len() == 2 {
+        return (px[0], px[1]);
+    }
+    if px.len() == 3 {
+        return *iterate_closest_pair(&[
+            (px[0], px[1]),
+            (px[1], px[2]),
+        ]);
     }
 
-    let midpoint = midpoint(&px);
+    let midpoint = vec_range_midpoint(&px);
     let lx = &px[..midpoint];
     let ly = &py[..midpoint];
     let rx = &px[midpoint..];
@@ -189,34 +173,6 @@ pub fn find(x: Plane) -> (Point, Point) {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_f64_min() {
-        let x = [2.0, 1.0, -10.0, 5.0, f64::NAN];
-        assert_eq!(f64_min(&x), -10.0);
-    }
-
-    #[test]
-    fn test_euclidean_distance() {
-        let tests: [(Point, Point, f64); 3] = [
-            ((2, 2), (2, 2), 0.0),
-            ((-2, 2), (2, -2), 5.656854249492381),
-            ((5, 6), (7, 8), 2.8284271247461903)
-        ];
-
-        for test in tests.to_vec() {
-            assert_eq!(euclidean_distance(test.0, test.1), test.2);
-        }
-    }
-
-    #[test]
-    fn test_get_point_axis() {
-        let point: Point = (0, 1);
-        let axis = Axis::X;
-
-        assert_eq!(get_point_axis(point, &Axis::X), point.0);
-        assert_eq!(get_point_axis(point, &Axis::Y), point.1);
-    }
 
     #[test]
     fn test_iterate_closest_pair() {
