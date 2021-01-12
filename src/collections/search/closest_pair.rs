@@ -26,6 +26,7 @@ fn iterate_closest_pair(x: &[PointPair]) -> &PointPair {
     closest_pair
 }
 
+// Merge Pairs using merge from merge sort on types Plane
 fn merge_pairs(a: Plane, b: Plane, axis: &Axis) -> Plane {
     let mut merged: Plane = Vec::new();
     let mut a_index = 0;
@@ -53,6 +54,7 @@ fn merge_pairs(a: Plane, b: Plane, axis: &Axis) -> Plane {
     merged
 }
 
+// Sort Pairs using merge sort on Plane type
 fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
     if x.len() <= 1 {
         return x;
@@ -70,12 +72,22 @@ fn sort_pairs(x: Plane, axis: &Axis) -> Plane {
 
 // Closest Split Pair
 //
-// Input: Plane x of n Point elements
-// Output: pair of Point elements from x that are closest
+// Input: Plane x, y sorted by respective axis and minimum delta of halves
+// Output: Option Point Pair from x that are closest
 //
 // =================================================================================================
 //
-// todo
+// x_median = x value at median point sorted by x-axis
+// sy = points in py where point x value is within x_median +/- delta
+//
+// closest_pair = none
+// best_euclidean_distance = delta
+//
+// for point pairs in sy (brute force within min 7 or remainder)
+//     if euclidean_distance is less than best_euclidean_distance
+//         closest_pair = current point pair
+//
+// return closest_pair
 fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> Option<PointPair> {
     let midpoint = vec_range_midpoint(&px);
     let pxl = &px[..midpoint];
@@ -112,7 +124,21 @@ fn closest_split_pair(px: Plane, py: Plane, delta: f64) -> Option<PointPair> {
 //
 // =================================================================================================
 //
-// todo
+// if px length equals 2 then
+//     base case: return px (already closest pair)
+// if px length equals 3 then
+//     base case: return brute force closest pair search
+//
+// lx, ly = first halves of px and py
+// rx, ry = second halves of px and py
+//
+// l1, l2 = closest pair in first halve
+// r1, r2 = closest pair in second halve
+//
+// delta = minimum euclidean distance between first and second halve closest pairs (left and right)
+// s1, s2 = closest split pair between first and second halves using delta
+//
+// return closest pair amongst left, right or split pairs
 fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
     if px.len() == 2 {
         return (px[0], px[1]);
@@ -162,8 +188,11 @@ fn closest_pair(px: Plane, py: Plane) -> (Point, Point) {
 //
 // =================================================================================================
 //
-// todo
-pub fn find(x: Plane) -> (Point, Point) {
+// px = x plane sorted by x-axis
+// py = y plane sorted by y-axis
+//
+// return closest pair in x plane
+pub fn find(x: Plane) -> PointPair {
     let px: Plane = sort_pairs(x.clone(), &Axis::X); // todo - optimize O(n) clone w/borrow
     let py: Plane = sort_pairs(x, &Axis::Y);
 
