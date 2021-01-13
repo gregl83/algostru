@@ -1,6 +1,6 @@
 # algostru
 
-Algorithms (algo) and Data Structures (stru)
+Algorithms (algo) and Data Structures (stru) using Rust
 
 ## Stability
 
