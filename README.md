@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/gregl83/algostru/workflows/CI/badge.svg?branch=main)](https://github.com/gregl83/algostru/actions?query=workflow%3ACI+branch%3Amain)
 # algostru
 
-Algorithms (algo) and Data Structures (stru)
+Algorithms (algo) and Data Structures (stru) using Rust
 
 ## Stability
 
