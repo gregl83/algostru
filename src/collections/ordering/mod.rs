@@ -1,26 +1,13 @@
-pub mod insertion_sort;
 pub mod bubble_sort;
+pub mod insertion_sort;
 pub mod merge_sort;
 pub mod merge_sort_inversion_count;
 pub mod quick_sort;
+pub mod selection_sort;
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_insertion_sort() {
-        let mut x: Vec<isize> = vec![
-            10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
-        ];
-        let expectation: Vec<isize> = vec![
-            -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-        ];
-
-        insertion_sort::sort(&mut x);
-
-        assert_eq!(x, expectation);
-    }
 
     #[test]
     fn test_bubble_sort() {
@@ -32,6 +19,20 @@ mod tests {
         ];
 
         bubble_sort::sort(&mut x);
+
+        assert_eq!(x, expectation);
+    }
+
+    #[test]
+    fn test_insertion_sort() {
+        let mut x: Vec<isize> = vec![
+            10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
+        ];
+        let expectation: Vec<isize> = vec![
+            -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        ];
+
+        insertion_sort::sort(&mut x);
 
         assert_eq!(x, expectation);
     }
@@ -77,6 +78,20 @@ mod tests {
         ];
 
         quick_sort::sort(&mut x);
+
+        assert_eq!(x, expectation);
+    }
+
+    #[test]
+    fn test_selection_sort() {
+        let mut x: Vec<isize> = vec![
+            10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
+        ];
+        let expectation: Vec<isize> = vec![
+            -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        ];
+
+        selection_sort::sort(&mut x);
 
         assert_eq!(x, expectation);
     }
