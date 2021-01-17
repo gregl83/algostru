@@ -54,15 +54,15 @@ mod tests {
 
     #[test]
     fn test_quick_sort() {
-        let x: Vec<isize> = vec![
+        let mut x: Vec<isize> = vec![
             10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
         ];
         let expectation: Vec<isize> = vec![
             -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         ];
 
-        let sorted = quick_sort::sort(x);
+        quick_sort::sort(&mut x);
 
-        assert_eq!(sorted, expectation);
+        assert_eq!(x, expectation);
     }
 }
