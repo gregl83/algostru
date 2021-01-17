@@ -39,6 +39,10 @@ Either `cargo run` or `cargo install` should work fine from repository root.
   - Search
     - [Closest Pair](/src/collections/search/closest_pair.rs)
 
+## Usage
+
+See [docs.rs/algostru](https://docs.rs/algostru/).
+
 ## References
 
 - [Stanford Algorithms Specialization](https://www.coursera.org/specializations/algorithms)
