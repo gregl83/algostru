@@ -42,6 +42,7 @@ fn karatsuba(x: BigInt, y: BigInt) -> BigInt {
 ///
 /// ================================================================================================
 ///
+/// ```ignore
 /// n = max length of x or y
 ///
 /// if n equals 1 then
@@ -50,8 +51,8 @@ fn karatsuba(x: BigInt, y: BigInt) -> BigInt {
 ///     a, b = first and second halves (n/2) of x
 ///     c, d = first and second halves (n/2) of y
 ///
-///     p = sum of a + b
-///     q = sum of c + d
+///     p = sum of a and b
+///     q = sum of c and d
 ///
 ///     recursive karatsuba:
 ///     ac = product of a * c
@@ -61,6 +62,7 @@ fn karatsuba(x: BigInt, y: BigInt) -> BigInt {
 ///     adbc = pq - ac - bd
 ///
 ///     return result: 10^n * ac + (10^n/2) * adbc + bd
+/// ```
 pub fn multiply(x: BigInt, y: BigInt) -> BigInt {
     karatsuba(x, y)
 }
