@@ -1,10 +1,12 @@
 use rand::Rng;
 use std::borrow::BorrowMut;
 
-fn rand_pivot(left: usize, right: usize) -> usize {
-    rand::thread_rng().gen_range(left, right)
+/// Generate random pivot index using start and end indices
+fn rand_pivot(start: usize, end: usize) -> usize {
+    rand::thread_rng().gen_range(start, end)
 }
 
+/// Partition vector of distinct integers (partially sort using endpoint indices)
 fn partition(x: &mut [isize], left: usize, right: usize) -> usize {
     let pivot_value = x[left];
     let mut i = left + 1;
@@ -20,6 +22,7 @@ fn partition(x: &mut [isize], left: usize, right: usize) -> usize {
     pivot
 }
 
+/// Quick Sort implementation
 fn quick_sort(x: &mut [isize], left: usize, right: usize) {
     if left >= right { return }
 
@@ -31,14 +34,23 @@ fn quick_sort(x: &mut [isize], left: usize, right: usize) {
     quick_sort(x, pivot + 1, right);
 }
 
-// Quick Sort
-//
-// Input: vector x of n elements
-// Output: sorted vector of n elements
-//
-// =================================================================================================
-//
-// todo
+/// Quick Sort
+///
+/// Input: vector x of n distinct integers, left and right endpoint indices
+/// Post-condition: sorted vector of n elements
+///
+/// =================================================================================================
+///
+/// if length of x equals or is less than 1 then
+///     base case: return
+///
+/// pivot index = random pivot index from x
+/// swap x[left] for x[pivot index]
+/// j = partition vector x (partial sort)
+///
+/// recursive sort:
+///     x, left, j
+///     x, j + 1, right
 pub fn sort(x: &mut Vec<isize>) {
     let left = 0;
     let right = x.len();
