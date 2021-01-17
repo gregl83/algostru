@@ -7,22 +7,23 @@ use num_integer::Integer;
 type M = DMatrix<isize>;
 type MSlice<'a> = DMatrixSlice<'a, isize>;
 
+/// to_slice converts DMatrix to DMatrixSlice
 fn to_slice(m: &M) -> MSlice {
     m.slice((0, 0), (m.nrows(), m.ncols()))
 }
 
-// Quadrants
-//
-// Input: reference to matrix slice x
-// Output: tuple of quadrants from x
-// Assumption: x is square matrix
-//
-// =================================================================================================
-//
-// x_rows, x_cols = x matrix shape
-// midpoint_row, midpoint_col = floored halves of x_rows and x_cols
-//
-// return result: tuple of matrix quadrants
+/// Quadrants
+///
+/// Input: reference to matrix slice x
+/// Output: tuple of quadrants from x
+/// Assumption: x is square matrix
+///
+/// ================================================================================================
+///
+/// x_rows, x_cols = x matrix shape
+/// midpoint_row, midpoint_col = floored halves of x_rows and x_cols
+///
+/// return result: tuple of matrix quadrants
 fn quadrants<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>, MSlice<'a>) {
     let divisor: usize = 2;
 
@@ -49,24 +50,24 @@ fn quadrants<'a>(x: &'a MSlice<'a>) -> (MSlice<'a>, MSlice<'a>, MSlice<'a>, MSli
     (q1, q2, q3, q4)
 }
 
-// Combine Quadrants
-//
-// Input: matrix quadrants q1..q4
-// Output: matrix of combined quadrants
-// Assumption: quadrants are square matrices
-//
-// =================================================================================================
-//
-// quadrants = (q1..q4)
-// n_rows = q1_rows + q3_rows
-// n_cols = q1_cols + q2_cols
-//
-// data = []
-// loop quadrants
-//     loop quadrants values
-//         insert value into data
-//
-// return result: matrix of size n_rows x n_cols with data
+/// Combine Quadrants
+///
+/// Input: matrix quadrants q1..q4
+/// Output: matrix of combined quadrants
+/// Assumption: quadrants are square matrices
+///
+/// ================================================================================================
+///
+/// quadrants = (q1..q4)
+/// n_rows = q1_rows + q3_rows
+/// n_cols = q1_cols + q2_cols
+///
+/// data = []
+/// loop quadrants
+///     loop quadrants values
+///         insert value into data
+///
+/// return result: matrix of size n_rows x n_cols with data
 fn combine_quadrants(q1: M, q2: M, q3: M, q4: M, ) -> M {
     let quadrants = [[&q1, &q3], [&q2, &q4]];
     let n_rows = &q1.nrows() + &q3.nrows();
@@ -91,15 +92,7 @@ fn combine_quadrants(q1: M, q2: M, q3: M, q4: M, ) -> M {
     DMatrix::from_vec(n_rows, n_cols, data)
 }
 
-// Strassen Matrix Multiplication
-//
-// Input: n-vector vectors x and y
-// Output: n-vector vector product of x and y
-// Assumption: x and y are equal squares
-//
-// =================================================================================================
-//
-// todo
+/// Strassen implementation
 fn strassen(x: MSlice, y: MSlice) -> M {
     if x.len() == 1 {
         return x * y;
@@ -140,6 +133,15 @@ fn strassen(x: MSlice, y: MSlice) -> M {
     combine_quadrants(q1, q2, q3, q4)
 }
 
+/// Strassen Matrix Multiplication
+///
+/// Input: n-vector vectors x and y
+/// Output: n-vector vector product of x and y
+/// Assumption: x and y are equal squares
+///
+/// =================================================================================================
+///
+/// todo - explain what is not simply explained
 pub fn multiply(x: M, y: M) -> M {
     strassen(to_slice(&x), to_slice(&y))
 }

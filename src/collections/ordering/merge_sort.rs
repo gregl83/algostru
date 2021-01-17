@@ -1,23 +1,23 @@
 use crate::collections::vec_range_midpoint;
 
-// Merge Vectors
-//
-// Input: two sorted vectors x and y
-// Output: merged vector containing the elements of x and y
-//
-// =================================================================================================
-//
-// result = new vector
-// x_index = 0
-// y_index = 0
-//
-// while index_x < length of x and index_y < length of y
-//     result.push smaller of x[x_index] and y[y_index]
-//     increment index for smaller of x[x_index] and y[y_index] respectively
-//
-// result.push for all elements remaining in x or y
-//
-// return result
+/// Merge Vectors
+///
+/// Input: two sorted vectors x and y
+/// Output: merged vector containing the elements of x and y
+///
+/// =================================================================================================
+///
+/// result = new vector
+/// x_index = 0
+/// y_index = 0
+///
+/// while index_x < length of x and index_y < length of y
+///     result.push smaller of x[x_index] and y[y_index]
+///     increment index for smaller of x[x_index] and y[y_index] respectively
+///
+/// result.push for all elements remaining in x or y
+///
+/// return result
 fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
     let mut merged: Vec<isize> = Vec::new();
     let mut x_index = 0;
@@ -43,21 +43,21 @@ fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
     merged
 }
 
-// Merge Sort
-//
-// Input: vector x of n elements
-// Output: sorted vector of n elements
-//
-// =================================================================================================
-//
-// if x length equals 0 or 1 then
-//     base case: return vector x
-//
-// recursive sort:
-//   a = merge sort of first halve of x
-//   b = merge sort of second halve of x
-//
-// return result: vector x sorted
+/// Merge Sort
+///
+/// Input: vector x of n elements
+/// Output: sorted vector of n elements
+///
+/// ================================================================================================
+///
+/// if x length equals 0 or 1 then
+///     base case: return vector x
+///
+/// recursive sort:
+///   a = merge sort of first halve of x
+///   b = merge sort of second halve of x
+///
+/// return result: vector x sorted
 pub fn sort(x: Vec<isize>) -> Vec<isize> {
     if x.len() <= 1 {
         return x;

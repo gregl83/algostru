@@ -39,7 +39,7 @@ fn quick_sort(x: &mut [isize], left: usize, right: usize) {
 /// Input: vector x of n distinct integers, left and right endpoint indices
 /// Post-condition: sorted vector of n elements
 ///
-/// =================================================================================================
+/// ================================================================================================
 ///
 /// if length of x equals or is less than 1 then
 ///     base case: return
