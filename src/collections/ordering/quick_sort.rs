@@ -1,5 +1,4 @@
 use rand::Rng;
-use std::borrow::BorrowMut;
 
 /// Generate random pivot index using start and end indices
 fn rand_pivot(start: usize, end: usize) -> usize {

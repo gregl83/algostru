@@ -1,7 +1,7 @@
 /// Bubble Sort
 ///
 /// Input: mutable reference of vector x of n elements
-/// Output: sorted vector of n elements
+/// Post-condition: sorted vector of n elements
 ///
 /// ================================================================================================
 ///

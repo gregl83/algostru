@@ -32,6 +32,7 @@ Either `cargo run` or `cargo install` should work fine from repository root.
   - Multiplication
     - [Strassen](/src/collections/multiplication/strassen.rs)
   - Ordering
+    - [Insertion Sort](/src/collections/ordering/insertion_sort.rs)
     - [Bubble Sort](/src/collections/ordering/bubble_sort.rs)
     - [Merge Sort](/src/collections/ordering/merge_sort.rs)
     - [Merge Sort Inversion Count](/src/collections/ordering/merge_sort_inversion_count.rs)
