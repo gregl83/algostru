@@ -27,19 +27,19 @@ Either `cargo run` or `cargo install` should work fine from repository root.
 
 - Arithmetic
   - Multiplication
-    - [Karatsuba](/src/arithmetic/multiplication/karatsuba.rs)
+    - [Karatsuba](/src/arithmetic/multiplication/karatsuba.rs) *O(n^log3)*
 - Collections
   - Multiplication
-    - [Strassen](/src/collections/multiplication/strassen.rs)
+    - [Strassen](/src/collections/multiplication/strassen.rs) *O(n^log7)*
   - Ordering
-    - [Bubble Sort](/src/collections/ordering/bubble_sort.rs)
-    - [Insertion Sort](/src/collections/ordering/insertion_sort.rs)
-    - [Merge Sort](/src/collections/ordering/merge_sort.rs)
-    - [Merge Sort Inversion Count](/src/collections/ordering/merge_sort_inversion_count.rs)
-    - [Quick Sort](/src/collections/ordering/quick_sort.rs)
-    - [Selection Sort](/src/collections/ordering/selection_sort.rs)
+    - [Bubble Sort](/src/collections/ordering/bubble_sort.rs) *O(n^2)*
+    - [Insertion Sort](/src/collections/ordering/insertion_sort.rs) *O(n^2)*
+    - [Merge Sort](/src/collections/ordering/merge_sort.rs) *O(n log(n))*
+    - [Merge Sort Inversion Count](/src/collections/ordering/merge_sort_inversion_count.rs) *O(n log(n))*
+    - [Quick Sort](/src/collections/ordering/quick_sort.rs) *O(n log(n))*
+    - [Selection Sort](/src/collections/ordering/selection_sort.rs) *O(n^2)*
   - Search
-    - [Closest Pair](/src/collections/search/closest_pair.rs)
+    - [Closest Pair](/src/collections/search/closest_pair.rs) *O(n log(n))*
 
 ## Usage
 
