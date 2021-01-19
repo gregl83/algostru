@@ -48,6 +48,7 @@ See [docs.rs/algostru](https://docs.rs/algostru/).
 ## References
 
 - [Stanford Algorithms Specialization](https://www.coursera.org/specializations/algorithms)
+- [Mathematics for Computer Science](http://courses.csail.mit.edu/6.042/spring18/mcs.pdf)
 - [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
 
 ## License
