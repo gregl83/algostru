@@ -18,6 +18,32 @@ fn insertion_sort(x: &mut Vec<isize>, left: usize, right: Option<usize>) {
     }
 }
 
+/// Merge Sort with left/right sides (x/y)
+fn merge(x: &[isize], y: &[isize]) -> Vec<isize> {
+    let mut merged: Vec<isize> = Vec::new();
+    let mut x_index = 0;
+    let mut y_index = 0;
+
+    while x_index < x.len() && y_index < y.len() {
+        if x[x_index] <= y[y_index] {
+            merged.push(x[x_index]);
+            x_index += 1;
+        } else {
+            merged.push(y[y_index]);
+            y_index += 1;
+        }
+    }
+
+    for element in x[x_index..].to_vec() {
+        merged.push(element);
+    }
+    for element in y[y_index..].to_vec() {
+        merged.push(element);
+    }
+
+    merged
+}
+
 /// Time Sort
 ///
 /// Input: mutable reference of vector x of n elements
@@ -34,15 +60,17 @@ pub fn sort(x: &mut Vec<isize>) {
         insertion_sort(x, i, Some(cmp::min((i + min_run - 1), n - 1)))
     }
 
-    let size = min_run;
+    let mut size = min_run;
     while size < n {
         for start in (0..n).step_by(size * 2) {
             let midpoint = start + size -1;
             let end = cmp::min((start + size * 2), n - 1);
 
-            // fixme - incomplete time sort algorithm
+            let merged = merge(&x[start..(midpoint + 1)], &x[(midpoint + 1)..(end + 1)]);
 
+            x[start..(start + merged.len())] = *merged;
         }
+        size *= 2;
     }
 }
 
