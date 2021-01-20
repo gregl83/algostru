@@ -19,7 +19,7 @@ fn insertion_sort(x: &mut Vec<isize>, left: usize, right: Option<usize>) {
 }
 
 /// Merge Sort with left/right sides (x/y)
-fn merge(x: &[isize], y: &[isize]) -> Vec<isize> {
+fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
     let mut merged: Vec<isize> = Vec::new();
     let mut x_index = 0;
     let mut y_index = 0;
@@ -66,9 +66,9 @@ pub fn sort(x: &mut Vec<isize>) {
             let midpoint = start + size -1;
             let end = cmp::min((start + size * 2), n - 1);
 
-            let merged = merge(&x[start..(midpoint + 1)], &x[(midpoint + 1)..(end + 1)]);
+            //let merged = merge(&x[start..(midpoint + 1)], &x[(midpoint + 1)..(end + 1)]);
 
-            x[start..(start + merged.len())] = *merged;
+            //x[start..(start + merged.len())] = *merged;
         }
         size *= 2;
     }
@@ -79,7 +79,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_insertion_sort_with_boundaries() {
+    fn test_insertion_sort_with_total_boundaries() {
         let mut x: Vec<isize> = vec![
             10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
         ];
@@ -88,6 +88,20 @@ mod tests {
         ];
 
         insertion_sort(&mut x, 0, None);
+
+        assert_eq!(x, expectation);
+    }
+
+    #[test]
+    fn test_insertion_sort_with_subset_boundaries() {
+        let mut x: Vec<isize> = vec![
+            10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10
+        ];
+        let expectation: Vec<isize> = vec![
+            10, 9, 8, 7, 6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, -6, -7, -8, -9, -10
+        ];
+
+        insertion_sort(&mut x, 5, Some(16));
 
         assert_eq!(x, expectation);
     }
