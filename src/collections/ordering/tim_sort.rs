@@ -7,7 +7,7 @@ fn insertion_sort(x: &mut Vec<isize>, left: usize, right: Option<usize>) {
         _ => x.len()
     };
 
-    for i in (left + 1)..right {
+    for i in left..right {
         let mut insert_index = i;
         let current_value = x[insert_index];
         while insert_index > left && x[insert_index - 1] > current_value {
@@ -19,29 +19,47 @@ fn insertion_sort(x: &mut Vec<isize>, left: usize, right: Option<usize>) {
 }
 
 /// Merge Sort with left/right sides (x/y)
-fn merge(x: Vec<isize>, y: Vec<isize>) -> Vec<isize> {
-    let mut merged: Vec<isize> = Vec::new();
-    let mut x_index = 0;
-    let mut y_index = 0;
+fn merge(x: &mut Vec<isize>, start: usize, midpoint: usize, end: usize) {
+    let mut sorted: Vec<isize> = Vec::new();
 
-    while x_index < x.len() && y_index < y.len() {
-        if x[x_index] <= y[y_index] {
-            merged.push(x[x_index]);
-            x_index += 1;
+    let mut start = start;
+    let mut midpoint = midpoint;
+
+    if midpoint >= end {
+        midpoint = start;
+        start = 0;
+    }
+
+    let left = &x[start..midpoint];
+    let right = &x[midpoint..end];
+
+    let mut left_index = 0;
+    let mut right_index = 0;
+
+    while left_index < left.len()  && right_index < right.len() {
+        if left[left_index] <= right[right_index] {
+            sorted.push(left[left_index]);
+            left_index += 1;
         } else {
-            merged.push(y[y_index]);
-            y_index += 1;
+            sorted.push(right[right_index]);
+            right_index += 1;
         }
     }
 
-    for element in x[x_index..].to_vec() {
-        merged.push(element);
+    while left_index < left.len() {
+        sorted.push(left[left_index]);
+        left_index += 1;
     }
-    for element in y[y_index..].to_vec() {
-        merged.push(element);
+    while right_index < right.len() {
+        sorted.push(right[right_index]);
+        right_index += 1;
     }
 
-    merged
+    let mut index_start = start;
+    for element in sorted.iter() {
+        x[index_start] = *element;
+        index_start += 1;
+    }
 }
 
 /// Time Sort
@@ -57,18 +75,16 @@ pub fn sort(x: &mut Vec<isize>) {
     let n = x.len();
 
     for i in (0..n).step_by(min_run) {
-        insertion_sort(x, i, Some(cmp::min((i + min_run - 1), n - 1)))
+        insertion_sort(x, i, Some(cmp::min((i + min_run), n)));
     }
 
     let mut size = min_run;
     while size < n {
         for start in (0..n).step_by(size * 2) {
-            let midpoint = start + size -1;
-            let end = cmp::min((start + size * 2), n - 1);
+            let midpoint = start + size;
+            let end = cmp::min((start + size * 2), n);
 
-            //let merged = merge(&x[start..(midpoint + 1)], &x[(midpoint + 1)..(end + 1)]);
-
-            //x[start..(start + merged.len())] = *merged;
+            merge(x, start, midpoint, end);
         }
         size *= 2;
     }
