@@ -69,6 +69,7 @@ fn merge(x: &mut Vec<isize>, start: usize, midpoint: usize, end: usize) {
 ///
 /// ================================================================================================
 ///
+/// ```ignore
 /// set chunk size for iterative sorting
 /// set n to unsorted vector size
 ///
@@ -84,6 +85,7 @@ fn merge(x: &mut Vec<isize>, start: usize, midpoint: usize, end: usize) {
 ///         merge two left/right chunks
 ///
 ///     size = size * 2
+/// ```
 pub fn sort(x: &mut Vec<isize>) {
     let chunk_size = 32;
     let n = x.len();
