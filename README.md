@@ -41,6 +41,8 @@ Either `cargo run` or `cargo install` should work fine from repository root.
     - [Tim Sort](/src/collections/ordering/tim_sort.rs) *O(n log(n))*
   - Search
     - [Closest Pair](/src/collections/search/closest_pair.rs) *O(n log(n))*
+- Tries
+  - Radix Tree
 
 ## Usage
 

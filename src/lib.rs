@@ -6,3 +6,4 @@
 
 pub mod arithmetic;
 pub mod collections;
+pub mod tries;
