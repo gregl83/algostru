@@ -18,7 +18,7 @@ fn insertion_sort(x: &mut Vec<isize>, left: usize, right: Option<usize>) {
     }
 }
 
-/// Merge Sort with left/right sides (x/y)
+/// Merge Sort by reference with left/right sides (x/y)
 fn merge(x: &mut Vec<isize>, start: usize, midpoint: usize, end: usize) {
     let mut sorted: Vec<isize> = Vec::new();
 
@@ -69,16 +69,30 @@ fn merge(x: &mut Vec<isize>, start: usize, midpoint: usize, end: usize) {
 ///
 /// ================================================================================================
 ///
-/// fixme
+/// set chunk size for iterative sorting
+/// set n to unsorted vector size
+///
+/// iterate over chunks
+///     call insertion sort on each chunk
+///
+/// set size to chunk size
+/// while size is less than length of vector
+///     for each size * 2 (start after left/right chunk size)
+///         set midpoint to start plus size
+///         set end to minimum of start plus size * 2 or length of vector
+///
+///         merge two left/right chunks
+///
+///     size = size * 2
 pub fn sort(x: &mut Vec<isize>) {
-    let min_run = 32;
+    let chunk_size = 32;
     let n = x.len();
 
-    for i in (0..n).step_by(min_run) {
-        insertion_sort(x, i, Some(cmp::min((i + min_run), n)));
+    for i in (0..n).step_by(chunk_size) {
+        insertion_sort(x, i, Some(cmp::min((i + chunk_size), n)));
     }
 
-    let mut size = min_run;
+    let mut size = chunk_size;
     while size < n {
         for start in (0..n).step_by(size * 2) {
             let midpoint = start + size;
