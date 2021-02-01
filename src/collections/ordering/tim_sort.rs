@@ -91,14 +91,14 @@ pub fn sort(x: &mut Vec<isize>) {
     let n = x.len();
 
     for i in (0..n).step_by(chunk_size) {
-        insertion_sort(x, i, Some(cmp::min((i + chunk_size), n)));
+        insertion_sort(x, i, Some(cmp::min(i + chunk_size, n)));
     }
 
     let mut size = chunk_size;
     while size < n {
         for start in (0..n).step_by(size * 2) {
             let midpoint = start + size;
-            let end = cmp::min((start + size * 2), n);
+            let end = cmp::min(start + size * 2, n);
 
             merge(x, start, midpoint, end);
         }
