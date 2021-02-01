@@ -46,3 +46,26 @@ impl Node {
         left_leaves + right_leaves
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_count_leaves() { ;
+        let expectation: usize = 4;
+
+        let mut tree = Node::new(10);
+
+        tree.insert(0);
+        tree.insert(-5);
+        tree.insert(5);
+
+        tree.insert(20);
+        tree.insert(15);
+        tree.insert(25);
+
+        let result = tree.count_leaves();
+        assert_eq!(result, expectation);
+    }
+}
