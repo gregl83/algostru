@@ -1,12 +1,2 @@
-pub mod radix;
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    #[ignore]
-    fn test_radix() {
-        assert!(false);
-    }
-}
+pub mod binary_search_tree;
+pub mod radix_tree;
