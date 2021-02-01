@@ -45,8 +45,21 @@ impl Node {
     }
 
     pub fn len(&self) -> usize {
-        // todo
-        1
+        if self.left.is_none() && self.right.is_none() {
+            return 1;
+        }
+
+        let left_leaves = match &self.left {
+            None => 0,
+            Some(left) => left.len()
+        };
+
+        let right_leaves = match &self.right {
+            None => 0,
+            Some(right) => right.len()
+        };
+
+        1 + left_leaves + right_leaves
     }
 
     pub fn count_leaves(&self) -> usize {
@@ -130,6 +143,24 @@ mod tests {
         assert!(left.is_none());
         let right = &result.right.as_ref();
         assert!(right.is_none());
+    }
+
+    #[test]
+    fn test_len() {
+        let expectation: usize = 7;
+
+        let mut tree = Node::new(10);
+
+        tree.insert(0);
+        tree.insert(-5);
+        tree.insert(5);
+
+        tree.insert(20);
+        tree.insert(15);
+        tree.insert(25);
+
+        let result = tree.len();
+        assert_eq!(result, expectation);
     }
 
     #[test]
