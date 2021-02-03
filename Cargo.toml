@@ -19,6 +19,8 @@ rand = "0.7"
 num-integer = "0.1.44"
 num-bigint = "0.3"
 nalgebra = "0.24.0"
+sha2 = "0.9.3"
+bytes = "1.0.1"
 
 [lib]
 name = "algostru"
