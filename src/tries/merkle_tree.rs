@@ -32,6 +32,20 @@ pub fn hash_pair(left: Hash, right: Hash) -> Hash {
     hash
 }
 
+fn binary_tree_height(nodes: usize, level: usize) -> usize {
+    if nodes == 0 { return 0; }
+    if nodes == 1 { return level + 1; }
+
+    let mut n = nodes;
+    if n % 2 == 1 { n += 1; }
+
+    binary_tree_height(n / 2, level + 1)
+}
+
+pub fn height(nodes: usize) -> usize {
+    binary_tree_height(nodes, 0)
+}
+
 #[derive(Debug, Clone)]
 pub struct Node {
     left: Option<Box<Node>>,
@@ -62,16 +76,6 @@ impl Node {
             hash
         }
     }
-}
-
-fn height(nodes: usize, level: usize) -> usize {
-    if nodes == 0 { return 0; }
-    if nodes == 1 { return level; }
-
-    let mut n = nodes;
-    if n % 2 == 1 { n += 1; }
-
-    height(n / 2, level + 1)
 }
 
 fn to_parents(nodes: &mut Vec<Node>) -> Vec<Node> {
@@ -272,7 +276,7 @@ mod tests {
         let values: Vec<isize> = vec![100, 200, 300, 400, 500];
 
         let expects = 4;
-        let actual = height(values.len(), 0);
+        let actual = height(values.len());
 
         assert_eq!(actual, expects);
     }
