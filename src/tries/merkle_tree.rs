@@ -64,6 +64,16 @@ impl Node {
     }
 }
 
+fn height(nodes: usize, level: usize) -> usize {
+    if nodes == 0 { return 0; }
+    if nodes == 1 { return level; }
+
+    let mut n = nodes;
+    if n % 2 == 1 { n += 1; }
+
+    height(n / 2, level + 1)
+}
+
 fn to_parents(nodes: &mut Vec<Node>) -> Vec<Node> {
     if nodes.len() <= 1 { return vec![nodes.swap_remove(0)]; }
 
@@ -88,6 +98,17 @@ pub fn to_tree(values: Vec<isize>) -> Node {
     }
     to_parents(&mut leafs).swap_remove(0)
 }
+
+struct Proof<'a> {
+    root_hash: Hash,
+    nodes: usize,
+    bits: &'a [u8],
+    hashes: Vec<Hash>,
+}
+
+// pub fn to_proof(tree: &Node, value: isize) -> Proof {
+//
+// }
 
 #[cfg(test)]
 mod tests {
@@ -244,5 +265,15 @@ mod tests {
 
         let tree_l4rlr = tree_l3rl.right.clone();
         assert!(tree_l4rlr.is_none());
+    }
+
+    #[test]
+    fn test_tree_height_from_values() {
+        let values: Vec<isize> = vec![100, 200, 300, 400, 500];
+
+        let expects = 4;
+        let actual = height(values.len(), 0);
+
+        assert_eq!(actual, expects);
     }
 }
