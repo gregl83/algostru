@@ -75,13 +75,40 @@ mod tests {
 
     #[test]
     fn test_new_binary_radix_two_branches() {
-        let branch_one: [u8; 3] = [0, 1, 0];
-        let branch_two: [u8; 3] = [0, 0, 0];
+        let branch_zero: [u8; 3] = [0, 1, 0];
+        let branch_one: [u8; 3] = [0, 0, 0];
 
         let mut tree = Node::new();
+        tree.insert(&branch_zero);
         tree.insert(&branch_one);
-        tree.insert(&branch_two);
 
-        // fixme
+        // level 0 (root) - branch 0 + 1
+        assert!(tree.children.0.is_some());
+        assert!(tree.children.1.is_none());
+
+        // level 1 - branch 0 + 1
+        let l1 = tree.children.0.unwrap();
+        assert!(l1.children.0.is_some());
+        assert!(l1.children.1.is_some());
+
+        // level 2 - branch 0
+        let l2b0 = l1.children.0.unwrap();
+        assert!(l2b0.children.0.is_some());
+        assert!(l2b0.children.1.is_none());
+
+        // level 2 - branch 1
+        let l2b1 = l1.children.1.unwrap();
+        assert!(l2b1.children.0.is_some());
+        assert!(l2b1.children.1.is_none());
+
+        // level 3 - branch 0
+        let l3b0 = l2b0.children.0.unwrap();
+        assert!(l3b0.children.0.is_none());
+        assert!(l3b0.children.1.is_none());
+
+        // level 3 - branch 1
+        let l3b1 = l2b1.children.0.unwrap();
+        assert!(l3b1.children.0.is_none());
+        assert!(l3b1.children.1.is_none());
     }
 }
