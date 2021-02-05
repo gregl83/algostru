@@ -62,6 +62,11 @@ mod tests {
         // level 4
         let l4 = l3.children.0.unwrap();
         assert!(l4.children.0.is_none());
-        assert!(l4.children.1.is_none());
+        assert!(l4.children.1.is_some());
+
+        // level 5
+        let l5 = l4.children.1.unwrap();
+        assert!(l5.children.0.is_none());
+        assert!(l5.children.1.is_none());
     }
 }
