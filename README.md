@@ -44,6 +44,7 @@ Either `cargo run` or `cargo install` should work fine from repository root.
 - Tries
   - [Binary Search Tree](/src/tries/binary_search_tree.rs)
   - [Merkle Tree](/src/tries/merkle_tree.rs)
+  - [Radix Tree](/src/tries/radix_tree.rs)
 
 ## Usage
 
