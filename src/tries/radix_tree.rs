@@ -17,20 +17,23 @@ impl Node {
     }
 
     pub fn insert(&mut self, value: &[u8]) {
-        for i in 0..value.len() {
-            let bit = value[i];
-            if bit == 0 && self.children.0.is_none() {
-                let mut node = Node::new();
-                node.insert(&value[i + 1..value.len()]);
-                self.children.0 = Some(Box::new(node));
-                break;
-            } else if self.children.1.is_none() {
-                let mut node = Node::new();
-                node.insert(&value[i + 1..value.len()]);
-                self.children.1 = Some(Box::new(node));
-                break;
+        if value.len() == 0 { return; }
+        match value[0] {
+            0 => {
+                if self.children.0.is_none() {
+                    self.children.0 = Some(Box::new(Node::new()));
+                }
+                let node = self.children.0.as_mut().unwrap();
+                node.insert(&value[1..value.len()])
+            },
+            _ => {
+                if self.children.1.is_none() {
+                    self.children.1 = Some(Box::new(Node::new()));
+                }
+                let node = self.children.1.as_mut().unwrap();
+                node.insert(&value[1..value.len()]);
             }
-        }
+        };
     }
 }
 
@@ -68,5 +71,17 @@ mod tests {
         let l5 = l4.children.1.unwrap();
         assert!(l5.children.0.is_none());
         assert!(l5.children.1.is_none());
+    }
+
+    #[test]
+    fn test_new_binary_radix_two_branches() {
+        let branch_one: [u8; 3] = [0, 1, 0];
+        let branch_two: [u8; 3] = [0, 0, 0];
+
+        let mut tree = Node::new();
+        tree.insert(&branch_one);
+        tree.insert(&branch_two);
+
+        // fixme
     }
 }
