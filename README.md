@@ -1,9 +1,12 @@
 [![Crates.io](https://img.shields.io/crates/v/algostru.svg)](https://crates.io/crates/algostru)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gregl83/algostru/blob/master/LICENSE)
 [![Build Status](https://github.com/gregl83/algostru/workflows/CI/badge.svg?branch=main)](https://github.com/gregl83/algostru/actions?query=workflow%3ACI+branch%3Amain)
+
+<p align="center"><img src="/assets/algostru.png" /></p>
+
 # algostru
 
-Algorithms and Structures using Rust.
+Algorithms and data Structures powered by Rust.
 
 ## Stability
 
