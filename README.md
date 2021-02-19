@@ -6,7 +6,7 @@
 
 # algostru
 
-Algorithms and data Structures powered by Rust.
+Algorithms and Structures powered by Rust.
 
 ## Stability
 
