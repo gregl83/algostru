@@ -45,9 +45,9 @@ Either `cargo run` or `cargo install` should work fine from repository root.
   - Search
     - [Closest Pair](/src/collections/search/closest_pair.rs) *O(n log(n))*
 - Trees
-  - [Binary Search Tree](/src/tries/binary_search_tree.rs)
-  - [Merkle Tree](/src/tries/merkle_tree.rs)
-  - [Radix Tree](/src/tries/radix_tree.rs)
+  - [Binary Search Tree](/src/trees/binary_search_tree.rs)
+  - [Merkle Tree](/src/trees/merkle_tree.rs)
+  - [Radix Tree](/src/trees/radix_tree.rs)
 
 ## Usage
 
